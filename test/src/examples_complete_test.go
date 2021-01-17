@@ -28,4 +28,19 @@ func TestExamplesComplete(t *testing.T) {
 	vars := terraform.OutputMap(t, terraformOptions, "vars")
 	// Verify we're getting back the outputs we expect
 	assert.Greater(t, len(vars), 0)
+
+	// Run `terraform output` to get the value of an output variable
+	backendType := terraform.Output(t, terraformOptions, "backend_type")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, backendType, "s3")
+
+	// Run `terraform output` to get the value of an output variable
+	backend := terraform.OutputMap(t, terraformOptions, "backend")
+	// Verify we're getting back the outputs we expect
+	assert.Greater(t, len(backend), 0)
+
+	// Run `terraform output` to get the value of an output variable
+	allImportsList := terraform.OutputList(t, terraformOptions, "all_imports_list")
+	// Verify we're getting back the outputs we expect
+	assert.Greater(t, len(allImportsList), 1)
 }
