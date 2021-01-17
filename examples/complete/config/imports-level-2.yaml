@@ -8,20 +8,11 @@ vars:
 
 terraform:
   vars:
-    test: true
-
-  backend_type: s3 # s3, remote, vault, etc.
-  backend:
-    s3:
-      encrypt: true
-      bucket: "eg-ue2-root-tfstate"
-      key: "terraform.tfstate"
-      dynamodb_table: "eg-ue2-root-tfstate-lock"
-      role_arn: "arn:aws:iam::xxxxxxxxxxxx:role/eg-gbl-root-terraform"
-      acl: "bucket-owner-full-control"
-      region: "us-east-2"
-    remote: {}
-    vault: {}
+    var_1: 1_override
+    var_2: 2_override
 
 helmfile:
-  vars: {}
+  vars:
+    var_1: 1
+    var_2: 2
+

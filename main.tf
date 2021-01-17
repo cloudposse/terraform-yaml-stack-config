@@ -1,6 +1,6 @@
 module "yaml_config" {
   source  = "cloudposse/config/yaml"
-  version = "0.5.0"
+  version = "0.6.0"
 
   map_config_local_base_path  = var.map_config_local_base_path
   map_config_remote_base_path = var.map_config_remote_base_path
@@ -32,7 +32,7 @@ locals {
 
 module "yaml_config_vars" {
   source  = "cloudposse/config/yaml"
-  version = "0.5.0"
+  version = "0.6.0"
 
   parameters  = var.parameters
   map_configs = local.vars
