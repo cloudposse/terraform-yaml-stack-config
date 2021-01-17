@@ -12,9 +12,12 @@ terraform:
   backend:
     s3:
       encrypt: true
-      bucket: "example-bucket"
+      dynamodb_table: "eg-ue2-root-tfstate-lock"
+      role_arn: "arn:aws:iam::xxxxxxxxxxxx:role/eg-gbl-root-terraform"
+      acl: "bucket-owner-full-control"
+      bucket: "eg-ue2-root-tfstate"
       key: "terraform.tfstate"
-      region: "us-west-2"
+      region: "us-east-2"
     remote: {}
     vault: {}
 

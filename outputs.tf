@@ -20,5 +20,15 @@ output "all_imports_map" {
 
 output "vars" {
   value       = module.yaml_config_vars.map_configs
-  description = "vars configuration for the component"
+  description = "Vars configuration for a component"
+}
+
+output "backend_type" {
+  value       = local.backend_type
+  description = "Backend type configuration"
+}
+
+output "backend" {
+  value       = module.yaml_config_backend.map_configs
+  description = "Backend configuration for a component"
 }

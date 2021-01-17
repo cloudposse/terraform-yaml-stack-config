@@ -29,6 +29,22 @@ locals {
     try(local.conf["components"][var.component_type][local.component]["vars"], {}),
     try(local.conf["components"][var.component_type][var.component]["vars"], {})
   ]
+
+  backend_type = coalesce(
+    try(local.conf["backend_type"], null),
+    try(local.conf[var.component_type]["backend_type"], null),
+    try(local.conf["components"][var.component_type][var.component]["backend_type"], null),
+    "s3"
+  )
+
+  # Deep-merge all backend attributes in this order: global-scoped, component-type-scoped, component-scoped, component-instance-scoped
+  backend = [
+    try(local.conf["backend"][local.backend_type], {}),
+    try(local.conf[var.component_type]["backend"][local.backend_type], {}),
+    try(local.conf["components"][var.component_type][local.component]["backend"][local.backend_type], {}),
+    try(local.conf["components"][var.component_type][var.component]["backend"][local.backend_type], {})
+  ]
+
 }
 
 module "yaml_config_vars" {
@@ -36,6 +52,13 @@ module "yaml_config_vars" {
   version = "0.6.0"
 
   map_configs = local.vars
+  context     = module.this.context
+}
 
-  context = module.this.context
+module "yaml_config_backend" {
+  source  = "cloudposse/config/yaml"
+  version = "0.6.0"
+
+  map_configs = local.backend
+  context     = module.this.context
 }

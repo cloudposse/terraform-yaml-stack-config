@@ -231,6 +231,8 @@ No provider.
 |------|-------------|------|---------|:--------:|
 | additional\_tag\_map | Additional tags for appending to tags\_as\_list\_of\_maps. Not added to `tags`. | `map(string)` | `{}` | no |
 | attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
+| component | Component | `string` | `null` | no |
+| component\_type | Component type (terraform or helmfile) | `string` | `"terraform"` | no |
 | context | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | <pre>object({<br>    enabled             = bool<br>    namespace           = string<br>    environment         = string<br>    stage               = string<br>    name                = string<br>    delimiter           = string<br>    attributes          = list(string)<br>    tags                = map(string)<br>    additional_tag_map  = map(string)<br>    regex_replace_chars = string<br>    label_order         = list(string)<br>    id_length_limit     = number<br>  })</pre> | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_order": [],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
 | delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | enabled | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
@@ -258,8 +260,11 @@ No provider.
 |------|-------------|
 | all\_imports\_list | List of all imported YAML configurations |
 | all\_imports\_map | Map of all imported YAML configurations |
+| backend | Backend configuration for a component |
+| backend\_type | Backend type configuration |
 | list\_configs | Terraform lists from YAML configurations |
 | map\_configs | Terraform maps from YAML configurations |
+| vars | Vars configuration for a component |
 
 <!-- markdownlint-restore -->
 
