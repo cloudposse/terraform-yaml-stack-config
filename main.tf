@@ -22,6 +22,7 @@ locals {
 
   component = try(local.conf["components"][var.component_type][var.component]["component"], null)
 
+  # Deep-merge all variables in this order: global-scoped, component-type-scoped, component-scoped, component-instance-scoped
   vars = [
     try(local.conf["vars"], {}),
     try(local.conf[var.component_type]["vars"], {}),
@@ -34,7 +35,6 @@ module "yaml_config_vars" {
   source  = "cloudposse/config/yaml"
   version = "0.6.0"
 
-  parameters  = var.parameters
   map_configs = local.vars
 
   context = module.this.context
