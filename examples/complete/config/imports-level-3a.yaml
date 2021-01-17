@@ -18,7 +18,12 @@ terraform:
       bucket: "eg-ue2-root-tfstate"
       key: "terraform.tfstate"
       region: "us-east-2"
-    remote: {}
+    remote:
+      hostname: app.terraform.io
+      organization: company
+      workspaces:
+        name: ws1
+        prefix:
     vault: {}
 
 components:
