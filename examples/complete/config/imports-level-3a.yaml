@@ -7,5 +7,22 @@ terraform:
     var_2: 2a
     var_3: 3a
 
+  backend_type: s3 # s3, remote, vault, etc.
+
+  backend:
+    s3:
+      encrypt: true
+      bucket: "example-bucket"
+      key: "terraform.tfstate"
+      region: "us-west-2"
+    remote: {}
+    vault: {}
+
+components:
+  terraform:
+    vpc:
+      vars:
+        availability_zones: ["us-east-2a", "us-east-2b", "us-east-2c"]
+
 helmfile:
   vars: {}
