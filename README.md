@@ -107,10 +107,6 @@ For a complete example, see [examples/complete](examples/complete).
 For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest)
 (which tests and deploys the example on Datadog), see [test](test).
 
-For an example of using local config maps with `import` and deep merging into a final configuration map, see [examples/imports-local](examples/imports-local).
-
-For an example of using remote config maps with `import` and deep merging into a final configuration map, see [examples/imports-remote](examples/imports-remote).
-
 
 
 
@@ -120,46 +116,8 @@ For an example of using remote config maps with `import` and deep merging into a
 ### Example of local and remote maps and lists configurations with interpolation parameters
 
 ```hcl
-module "yaml_config" {
-  source = "cloudposse/config/yaml"
-  # Cloud Posse recommends pinning every module to a specific version
-  # version     = "x.x.x"
-
-  map_config_local_base_path = "./config"
-
-  map_config_paths = [
-    "map-configs/*.yaml",
-    "https://raw.githubusercontent.com/cloudposse/terraform-opsgenie-incident-management/master/examples/config/resources/services.yaml",
-    "https://raw.githubusercontent.com/cloudposse/terraform-opsgenie-incident-management/master/examples/config/resources/team_routing_rules.yaml"
-  ]
-
-  list_config_local_base_path = "./config"
-
-  list_config_paths = [
-    "list-configs/*.yaml",
-    "https://raw.githubusercontent.com/cloudposse/terraform-aws-service-control-policies/master/examples/complete/policies/organization-policies.yaml"
-  ]
-
-  parameters = {
-    param1 = "1"
-    param2 = "2"
-  }
-
-  context = module.this.context
-}
-```
-
-### Example of local maps configurations with `import` and deep merging
-
-In the example, we use two levels of imports,
-and the module deep merges the local config files `imports-level-3.yaml`, `imports-level-2.yaml`, and `imports-level-1.yaml`
-into a final config map.
-
-See [examples/imports-local](examples/imports-local) for more details.
-
-```hcl
-module "yaml_config" {
-  source = "cloudposse/config/yaml"
+module "yaml_stack_config" {
+  source = "cloudposse/stack-config/yaml"
   # Cloud Posse recommends pinning every module to a specific version
   # version     = "x.x.x"
 
@@ -169,29 +127,8 @@ module "yaml_config" {
     "imports-level-1.yaml"
   ]
 
-  context = module.this.context
-}
-```
-
-### Example of remote maps configurations with with `import` and deep merging
-
-In the example, we use two levels of imports,
-and the module deep merges the remote config files `globals.yaml`, `ue2-globals.yaml`, and `ue2-prod.yaml`
-into a final config map.
-
-See [examples/imports-remote](examples/imports-remote) for more details.
-
-```hcl
-module "yaml_config" {
-  source = "cloudposse/config/yaml"
-  # Cloud Posse recommends pinning every module to a specific version
-  # version     = "x.x.x"
-
-  map_config_remote_base_path = "https://raw.githubusercontent.com/cloudposse/atmos/master/example/stacks"
-
-  map_config_paths = [
-    "https://raw.githubusercontent.com/cloudposse/atmos/master/example/stacks/ue2-prod.yaml"
-  ]
+  component_type = "terraform"
+  component      = "my-vpc"
 
   context = module.this.context
 }
