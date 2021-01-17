@@ -8,4 +8,4 @@ map_config_paths = [
 
 component_type = "terraform"
 
-component = "vpc"
+component = "my-vpc"

@@ -1,5 +1,6 @@
 vars:
   level: 4
+  param: param4
 
 terraform:
   vars: {}

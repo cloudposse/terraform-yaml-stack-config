@@ -15,6 +15,14 @@ helmfile:
 components:
   terraform:
     vpc:
+      vars:
+        test_map:
+          a: a
+          b: b
+          c:
+            - 5
+            - 6
+            - 7
       backend:
         s3:
           workspace_key_prefix: "vpc"

@@ -12,9 +12,30 @@ helmfile:
 
 components:
   terraform:
+    my-vpc:
+      component: vpc
+      vars:
+        cidr_block: "10.132.0.0/18"
+        test_map:
+          a: a_override_2
+          map2:
+            atr1: 1
+            atr2: 2
+            atr3:
+              - 3a
+              - 3b
+              - 3c
+
     vpc:
       vars:
         cidr_block: "10.102.0.0/18"
+        test_map:
+          a: a_override
+          b: b_override
+          c:
+            - 1
+            - 2
+            - 3
     eks:
       vars: {}
 
