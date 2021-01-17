@@ -16,3 +16,26 @@ module "yaml_config" {
 
   context = module.this.context
 }
+
+locals {
+  conf = module.yaml_config.map_configs
+
+  component = try(local.conf["components"][var.component_type][var.component]["component"], null)
+
+  vars = [
+    try(local.conf["vars"], {}),
+    try(local.conf[var.component_type]["vars"], {}),
+    try(local.conf["components"][var.component_type][local.component]["vars"], {}),
+    try(local.conf["components"][var.component_type][var.component]["vars"], {})
+  ]
+}
+
+module "yaml_config_vars" {
+  source  = "cloudposse/config/yaml"
+  version = "0.5.0"
+
+  parameters  = var.parameters
+  map_configs = local.vars
+
+  context = module.this.context
+}

@@ -51,3 +51,14 @@ variable "map_configs" {
   description = "List of existing configurations of map type. Deep-merging of the existing map configs takes precedence over the map configs loaded from YAML files"
   default     = []
 }
+
+variable "component_type" {
+  type        = string
+  description = "Component type (terraform or helmfile)"
+  default     = "terraform"
+}
+
+variable "component" {
+  type        = string
+  description = "Component"
+}

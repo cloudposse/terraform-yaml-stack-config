@@ -13,5 +13,8 @@ module "yaml_stack_config" {
   remote_config_selector = var.remote_config_selector
   map_configs            = var.map_configs
 
+  component_type = var.component_type
+  component      = var.component
+
   context = module.this.context
 }
