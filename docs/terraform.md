@@ -26,18 +26,14 @@ No provider.
 | environment | Environment, e.g. 'uw2', 'us-west-2', OR 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
 | id\_length\_limit | Limit `id` to this many characters.<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
 | label\_order | The naming order of the id output and Name tag.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 5 elements, but at least one must be present. | `list(string)` | `null` | no |
-| list\_config\_local\_base\_path | Base path to local YAML configuration files of list type | `string` | `""` | no |
-| list\_config\_paths | Paths to YAML configuration files of list type | `list(string)` | `[]` | no |
-| list\_config\_remote\_base\_path | Base path to remote YAML configuration files of list type | `string` | `""` | no |
-| map\_config\_local\_base\_path | Base path to local YAML configuration files of map type | `string` | `""` | no |
-| map\_config\_paths | Paths to YAML configuration files of map type | `list(string)` | `[]` | no |
-| map\_config\_remote\_base\_path | Base path to remote YAML configuration files of map type | `string` | `""` | no |
-| map\_configs | List of existing configurations of map type. Deep-merging of the existing map configs takes precedence over the map configs loaded from YAML files | `any` | `[]` | no |
+| map\_config\_remote\_base\_path | Base path to remote stack configuration files | `string` | `""` | no |
 | name | Solution name, e.g. 'app' or 'jenkins' | `string` | `null` | no |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `null` | no |
 | parameters | Map of parameters for interpolation within the YAML config templates | `map(string)` | `{}` | no |
 | regex\_replace\_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | remote\_config\_selector | String to detect local vs. remote config paths | `string` | `"://"` | no |
+| stack\_config\_local\_base\_path | Base path to local stack configuration files | `string` | `""` | no |
+| stack\_config\_paths | Paths to stack configuration files | `list(string)` | `[]` | no |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 
@@ -45,12 +41,10 @@ No provider.
 
 | Name | Description |
 |------|-------------|
-| all\_imports\_list | List of all imported YAML configurations |
-| all\_imports\_map | Map of all imported YAML configurations |
 | backend | Backend configuration for a component |
 | backend\_type | Backend type configuration |
-| list\_configs | Terraform lists from YAML configurations |
-| map\_configs | Terraform maps from YAML configurations |
+| config | Stack configurations |
+| imports | List of all imported YAML files |
 | vars | Vars configuration for a component |
 
 <!-- markdownlint-restore -->

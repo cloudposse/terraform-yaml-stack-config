@@ -1,8 +1,8 @@
 enabled = true
 
-map_config_local_base_path = "./config"
+stack_config_local_base_path = "./stacks"
 
-map_config_paths = [
+stack_config_paths = [
   "my-stack.yaml"
 ]
 
