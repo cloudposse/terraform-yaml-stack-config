@@ -27,7 +27,8 @@
 
 -->
 
-Terraform module to convert local and remote YAML configuration templates into deep-merged maps to provision Terraform and helmfile stacks.
+Terraform module to convert local and remote YAML configuration templates into deep-merged maps
+of variables and Terraform backend attributes to provision [Terraform](https://www.terraform.io/) and [helmfile](https://github.com/roboll/helmfile) stacks.
 
 
 ---
@@ -62,13 +63,16 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 ## Introduction
 
-The module accepts paths to local and remote YAML configuration template files
-and converts the templates into Terraform lists and maps for consumption in other Terraform modules.
 
-The module can accept a map of parameters for interpolation within the YAML config templates.
+The module accepts the following:
 
-The module also supports a top-level `import` attribute in map configuration templates, which will include the file and perform a deep merge.
-Up to 10 levels of imports hierarchy are supported, and all imported maps are deep merged into a final configuration map.
+- Paths to local and remote YAML configuration template files for [Terraform](https://www.terraform.io/) and [helmfile](https://github.com/roboll/helmfile) stacks
+- Map of parameters for interpolation within the YAML config templates (optional)
+- Component type (`terraform` or `helmfile`) for which to return configurations
+- Component name for which to return the configurations (deep merged variables and Terraform backend attributes)
+
+The module supports a top-level `import` attribute in  YAML configuration templates, which will include the files and perform deep merging.
+Up to 10 levels of imports are supported, and all imported maps are deep merged into a final stack configuration map.
 
 For example, if you have a config file like this (e.g. `myconfig.yaml`):
 
@@ -78,9 +82,22 @@ For example, if you have a config file like this (e.g. `myconfig.yaml`):
       - file2
   ```
 
-Then, this module will deep merge `file1.yaml` and `file2.yaml` into `myconfig.yaml`.
+Then, the module will deep merge `file1.yaml` and `file2.yaml` into `myconfig.yaml`.
 
 __Note:__ Do not include the extensions (e.g. `.yaml`) in the imports.
+
+The module performs two-phase deep merging:
+
+- All maps from the provided and all imported YAML config files are deep merged first into the final stack configuration
+- The `vars` and `backend` sections from different parts of YAML configs are then deep merged into the final variables and Terraform backend configurations
+  for the specified component type and component name
+
+The module returns the following:
+
+- List of all imported files
+- The final deep merged stack configuration from all provided and imported YAML files
+- The final configuration of all variables (`vars`) for the specified component type and component name
+- The final configuration of all Terraform backend attributes (`backend`) for the specified component
 
 ### Attributions
 
@@ -113,8 +130,6 @@ For automated tests of the complete example using [bats](https://github.com/bats
 ## Examples
 
 
-### Example of local and remote maps and lists configurations with interpolation parameters
-
 ```hcl
 module "yaml_stack_config" {
   source = "cloudposse/stack-config/yaml"
@@ -124,7 +139,7 @@ module "yaml_stack_config" {
   map_config_local_base_path = "./config"
 
   map_config_paths = [
-    "imports-level-1.yaml"
+    "my-stack.yaml"
   ]
 
   component_type = "terraform"
@@ -133,6 +148,69 @@ module "yaml_stack_config" {
   context = module.this.context
 }
 ```
+
+The example returns the following `vars`, `backend`, and `import` configurations for the Terraform `my-vpc` component from the stack `my-stack`:
+
+  ```yaml
+    vars = {
+      "availability_zones" = [
+        "us-east-2a",
+        "us-east-2b",
+        "us-east-2c",
+      ]
+      "cidr_block" = "10.132.0.0/18"
+      "environment" = "ue2"
+      "level" = 3
+      "namespace" = "eg"
+      "param" = "param4"
+      "region" = "us-east-2"
+      "stage" = "prod"
+      "subnet_type_tag_key" = "example/subnet/type"
+      "test_map" = {
+        "a" = "a_override_2"
+        "b" = "b_override"
+        "c" = [
+          1,
+          2,
+          3,
+        ]
+        "map2" = {
+          "atr1" = 1
+          "atr2" = 2
+          "atr3" = [
+            "3a",
+            "3b",
+            "3c",
+          ]
+        }
+      }
+      "var_1" = "1_override"
+      "var_2" = "2_override"
+      "var_3" = "3a"
+    }
+
+    backend_type = s3
+
+    backend = {
+      "acl" = "bucket-owner-full-control"
+      "bucket" = "eg-ue2-root-tfstate"
+      "dynamodb_table" = "eg-ue2-root-tfstate-lock"
+      "encrypt" = true
+      "key" = "terraform.tfstate"
+      "region" = "us-east-2"
+      "role_arn" = "arn:aws:iam::xxxxxxxxxxxx:role/eg-gbl-root-terraform"
+      "workspace_key_prefix" = "vpc"
+    }
+
+    all_imports_list = [
+      "imports-level-2.yaml",
+      "imports-level-3.yaml",
+      "imports-level-3a.yaml",
+      "imports-level-4.yaml",
+    ]
+```
+
+See [examples/complete](examples/complete) for more details.
 
 
 
