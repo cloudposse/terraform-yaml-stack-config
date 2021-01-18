@@ -34,7 +34,7 @@ jobs:
           To have most recent changes of README.md and doc from origin templates
 
         branch: auto-update/readme
-        base: master
+        base: main
         delete-branch: true
         labels: |
           auto-update
