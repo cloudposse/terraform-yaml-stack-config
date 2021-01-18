@@ -99,12 +99,6 @@ The module returns the following:
 - The final configuration of all variables (`vars`) for the specified component type and component name
 - The final configuration of all Terraform backend attributes (`backend`) for the specified component
 
-### Attributions
-
-Big thanks to [Imperative Systems Inc.](https://github.com/Imperative-Systems-Inc)
-for the excellent [deepmerge](https://github.com/Imperative-Systems-Inc/terraform-modules/tree/master/deepmerge) Terraform module
-to perform a deep map merge of standard Terraform maps and objects.
-
 ## Usage
 
 

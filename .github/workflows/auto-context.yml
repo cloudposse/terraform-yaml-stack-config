@@ -50,7 +50,7 @@ jobs:
           To support all the features of the `context` interface.
 
         branch: auto-update/context.tf
-        base: main
+        base: master
         delete-branch: true
         labels: |
           auto-update
