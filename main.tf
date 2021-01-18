@@ -42,11 +42,11 @@ locals {
 }
 
 module "deepmerge_vars" {
-  source = "./modules/terraform-yaml-config/modules/deepmerge"
+  source = "./modules/deepmerge"
   maps   = local.vars
 }
 
 module "yaml_config_backend" {
-  source = "./modules/terraform-yaml-config/modules/deepmerge"
+  source = "./modules/deepmerge"
   maps   = local.backend
 }
