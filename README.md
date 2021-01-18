@@ -27,8 +27,8 @@
 
 -->
 
-Terraform module to convert local and remote YAML configuration templates into deep-merged maps
-of variables and Terraform backend attributes to provision [Terraform](https://www.terraform.io/) and [helmfile](https://github.com/roboll/helmfile) stacks.
+Terraform module to convert local and remote YAML configuration templates into deep-merged
+[Terraform](https://www.terraform.io/) and [helmfile](https://github.com/roboll/helmfile) stack configs.
 
 
 ---

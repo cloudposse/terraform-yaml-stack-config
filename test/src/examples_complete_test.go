@@ -40,7 +40,7 @@ func TestExamplesComplete(t *testing.T) {
 	assert.Greater(t, len(backend), 0)
 
 	// Run `terraform output` to get the value of an output variable
-	allImportsList := terraform.OutputList(t, terraformOptions, "all_imports_list")
+	imports := terraform.OutputList(t, terraformOptions, "imports")
 	// Verify we're getting back the outputs we expect
-	assert.Greater(t, len(allImportsList), 1)
+	assert.Greater(t, len(imports), 1)
 }
