@@ -9,7 +9,7 @@ output "imports" {
 }
 
 output "vars" {
-  value       = module.yaml_config_vars.map_configs
+  value       = module.deepmerge_vars.merged
   description = "Vars configuration for a component"
 }
 
@@ -19,6 +19,6 @@ output "backend_type" {
 }
 
 output "backend" {
-  value       = module.yaml_config_backend.map_configs
+  value       = module.yaml_config_backend.merged
   description = "Backend configuration for a component"
 }

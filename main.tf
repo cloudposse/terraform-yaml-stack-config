@@ -3,7 +3,7 @@ module "yaml_config" {
   version = "0.6.0"
 
   map_config_local_base_path  = var.stack_config_local_base_path
-  map_config_remote_base_path = var.map_config_remote_base_path
+  map_config_remote_base_path = var.stack_config_remote_base_path
   map_config_paths            = var.stack_config_paths
 
   parameters             = var.parameters
@@ -39,21 +39,14 @@ locals {
     try(local.conf["components"][var.component_type][local.component]["backend"][local.backend_type], {}),
     try(local.conf["components"][var.component_type][var.component]["backend"][local.backend_type], {})
   ]
-
 }
 
-module "yaml_config_vars" {
-  source  = "cloudposse/config/yaml"
-  version = "0.6.0"
-
-  map_configs = local.vars
-  context     = module.this.context
+module "deepmerge_vars" {
+  source = "./modules/terraform-yaml-config/modules/deepmerge"
+  maps   = local.vars
 }
 
 module "yaml_config_backend" {
-  source  = "cloudposse/config/yaml"
-  version = "0.6.0"
-
-  map_configs = local.backend
-  context     = module.this.context
+  source = "./modules/terraform-yaml-config/modules/deepmerge"
+  maps   = local.backend
 }

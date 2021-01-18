@@ -4,7 +4,7 @@ variable "stack_config_local_base_path" {
   default     = ""
 }
 
-variable "map_config_remote_base_path" {
+variable "stack_config_remote_base_path" {
   type        = string
   description = "Base path to remote stack configuration files"
   default     = ""
