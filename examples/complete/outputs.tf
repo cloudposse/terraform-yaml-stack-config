@@ -1,6 +1,6 @@
 output "configs" {
   value       = module.yaml_stack_config.config
-  description = "Stack configurations"
+  description = "Stack configs"
 }
 
 output "imports" {
@@ -9,16 +9,16 @@ output "imports" {
 }
 
 output "vars" {
-  value       = module.yaml_stack_config.vars
+  value       = module.vars.vars
   description = "Vars configuration for a component"
 }
 
 output "backend_type" {
-  value       = module.yaml_stack_config.backend_type
-  description = "Backend type configuration"
+  value       = module.backend.backend_type
+  description = "Backend type"
 }
 
 output "backend" {
-  value       = module.yaml_stack_config.backend
+  value       = module.backend.backend
   description = "Backend configuration for a component"
 }

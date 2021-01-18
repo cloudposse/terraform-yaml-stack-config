@@ -1,10 +1,8 @@
 enabled = true
 
-stack_config_local_base_path = "./stacks"
+stack_config_local_path = "./stacks"
 
-stack_config_paths = [
-  "my-stack.yaml"
-]
+stack = "my-stack.yaml"
 
 component_type = "terraform"
 
