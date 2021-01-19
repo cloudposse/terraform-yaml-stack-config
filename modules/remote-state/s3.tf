@@ -3,18 +3,16 @@ data "terraform_remote_state" "s3" {
 
   backend = "s3"
 
-  workspace = var.workspace != null ? var.workspace : (
-    format("%s-%s-%s", local.vars.environment, local.vars.stage, var.component)
-  )
+  workspace = local.workspace
 
   config = {
     encrypt              = local.backend.encrypt
     bucket               = local.backend.bucket
-    workspace_key_prefix = var.component
-    key                  = "terraform.tfstate"
+    key                  = local.backend.key
     dynamodb_table       = local.backend.dynamodb_table
     region               = local.vars.region
     role_arn             = var.privileged ? null : local.backend.role_arn
+    workspace_key_prefix = var.component
   }
 
   defaults = var.defaults

@@ -7,11 +7,7 @@ data "terraform_remote_state" "remote" {
     organization = local.backend.organization
 
     workspaces = {
-      name = var.workspace != null ? var.workspace : (
-        try(local.backend.workspace, null) != null ? local.backend.workspace : (
-          format("%s-%s-%s", local.vars.environment, local.vars.stage, var.component)
-        )
-      )
+      name = local.workspace
     }
   }
 

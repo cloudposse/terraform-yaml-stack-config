@@ -12,4 +12,5 @@ variable "component_type" {
 variable "component" {
   type        = string
   description = "Component"
+  default     = null
 }
