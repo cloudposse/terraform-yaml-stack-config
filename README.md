@@ -27,8 +27,10 @@
 
 -->
 
-Terraform module that accepts local or remote YAML stack configurations
-and returns deep-merged variables, backend config, and remote state outputs for Terraform and helmfile components.
+Terraform module that loads an opinionated ["stack" configuration](#examples) from local or remote YAML sources
+using the [`cloudposse/terraform-yaml-config`](https://github.com/cloudposse/terraform-yaml-config) module.
+
+It supports deep-merged variables, backend config, and remote state outputs for Terraform and helmfile components.
 
 
 ---
@@ -64,7 +66,7 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 ## Introduction
 
 
-The module has three sub-modules:
+The module is composed of three sub-modules:
 
   - [vars](modules/vars) - accepts stack configuration and returns deep-merged variables for a Terraform or helmfile component.
   - [backend](modules/backend) - accepts stack configuration and returns backend config for a Terraform component.
@@ -105,9 +107,41 @@ see [test](test).
 ## Examples
 
 
+Here's an example stack configuration file:
+
+```yaml
+  import:
+    - ue2-globals
+  vars:
+    stage: dev
+  terraform:
+    vars: {}
+  helmfile:
+    vars: {}
+  components:
+    terraform:
+      vpc:
+        backend:
+          s3:
+            workspace_key_prefix: "vpc"
+        vars:
+          cidr_block: "10.102.0.0/18"
+      eks:
+        backend:
+          s3:
+            workspace_key_prefix: "eks"
+        vars: {}
+    helmfile:
+      nginx-ingress:
+        vars:
+          installed: true
+```
+
+The `import` section refers to other stack configurations that are automatically deep merged.
+
 ### Complete example
 
-This example accepts a stack config `my-stack` (which in turn imports other YAML config dependencies)
+This example loads the stack config `my-stack` (which in turn imports other YAML config dependencies)
 and returns variables, backend config, and imports for stack `my-stack` and Terraform component `my-vpc`.
 
 ```hcl

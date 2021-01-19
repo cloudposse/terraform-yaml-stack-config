@@ -4,7 +4,7 @@ Terraform module that accepts stack configuration and returns backend config for
 
 ## Usage
 
-The following example accepts a stack config `my-stack` (which in turn imports other YAML config dependencies)
+The following example loads the stack config `my-stack` (which in turn imports other YAML config dependencies)
 and returns variables, backend config, and imports for stack `my-stack` and Terraform component `my-vpc`.
 
   ```hcl

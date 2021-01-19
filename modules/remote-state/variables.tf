@@ -16,7 +16,7 @@ variable "component" {
 
 variable "privileged" {
   type        = bool
-  description = "True if the provider already has access to the backend"
+  description = "True if the caller already has access to the backend without assuming roles"
   default     = false
 }
 
