@@ -19,11 +19,9 @@ terraform:
       key: "terraform.tfstate"
       region: "us-east-2"
     remote:
-      hostname: app.terraform.io
       organization: company
       workspaces:
         name: ws1
-        prefix:
     vault: {}
 
 components:

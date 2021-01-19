@@ -4,6 +4,11 @@ output "backend_type" {
 }
 
 output "backend" {
-  value       = module.yaml_config_backend.merged
+  value       = local.backend
   description = "Backend configuration for the component"
+}
+
+output "outputs" {
+  value       = local.outputs
+  description = "The outputs of the component"
 }

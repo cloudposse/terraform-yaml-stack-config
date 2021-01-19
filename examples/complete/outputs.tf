@@ -10,7 +10,7 @@ output "imports" {
 
 output "vars" {
   value       = module.vars.vars
-  description = "Vars configuration for a component"
+  description = "Vars configuration for the component"
 }
 
 output "backend_type" {
@@ -20,5 +20,5 @@ output "backend_type" {
 
 output "backend" {
   value       = module.backend.backend
-  description = "Backend configuration for a component"
+  description = "Backend configuration for the component"
 }

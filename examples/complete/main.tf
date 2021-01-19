@@ -1,10 +1,9 @@
 module "yaml_stack_config" {
   source = "../../"
 
-  stack_config_local_path  = var.stack_config_local_path
-  stack_config_remote_path = var.stack_config_remote_path
-  stack                    = var.stack
-  parameters               = var.parameters
+  stack_config_local_path = var.stack_config_local_path
+  stack                   = var.stack
+  parameters              = var.parameters
 
   context = module.this.context
 }
