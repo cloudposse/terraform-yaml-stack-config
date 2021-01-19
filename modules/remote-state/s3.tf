@@ -1,8 +1,11 @@
 data "terraform_remote_state" "s3" {
   count = local.backend_type == "s3" ? 1 : 0
 
-  backend   = "s3"
-  workspace = format("%s-%s-%s", local.vars.environment, local.vars.stage, var.component)
+  backend = "s3"
+
+  workspace = var.workspace != null ? var.workspace : (
+    format("%s-%s-%s", local.vars.environment, local.vars.stage, var.component)
+  )
 
   config = {
     encrypt              = local.backend.encrypt

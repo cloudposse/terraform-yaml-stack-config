@@ -20,8 +20,7 @@ terraform:
       region: "us-east-2"
     remote:
       organization: company
-      workspaces:
-        name: ws1
+      workspace: ws1
     vault: {}
 
 components:

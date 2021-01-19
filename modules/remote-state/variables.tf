@@ -25,3 +25,9 @@ variable "defaults" {
   description = "Default values if the data source is empty"
   default     = null
 }
+
+variable "workspace" {
+  type        = string
+  description = "Workspace"
+  default     = null
+}
