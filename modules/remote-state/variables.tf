@@ -31,3 +31,9 @@ variable "workspace" {
   description = "Workspace"
   default     = null
 }
+
+variable "include_component_in_workspace_name" {
+  type        = bool
+  description = "Whether to include the component name in the workspace name"
+  default     = true
+}

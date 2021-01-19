@@ -17,6 +17,17 @@ locals {
   backend      = module.backend.backend
   vars         = module.vars.vars
 
+  environment = coalesce(module.this.environment, local.vars.environment)
+  stage       = coalesce(module.this.stage, local.vars.stage)
+
+  workspace_from_environment_stage = var.include_component_in_workspace_name ? format("%s-%s-%s", local.environment, local.stage, var.component) : (
+    format("%s-%s", local.environment, local.stage)
+  )
+
+  workspace = var.workspace != null ? var.workspace : (
+    try(local.backend.workspace, null) != null ? local.backend.workspace : local.workspace_from_environment_stage
+  )
+
   remote_states = {
     s3     = data.terraform_remote_state.s3
     remote = data.terraform_remote_state.remote
