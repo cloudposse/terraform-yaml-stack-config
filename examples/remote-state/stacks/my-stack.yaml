@@ -1,0 +1,23 @@
+import:
+  - imports-level-2
+
+vars:
+  stage: prod
+
+terraform:
+  vars: {}
+
+helmfile:
+  vars: {}
+
+components:
+  terraform:
+    my-vpc:
+      component: vpc
+      vars:
+        cidr_block: "10.132.0.0/18"
+    vpc:
+      vars:
+        cidr_block: "10.102.0.0/18"
+    eks:
+      vars: {}

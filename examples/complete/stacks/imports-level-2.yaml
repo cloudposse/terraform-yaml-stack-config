@@ -1,0 +1,17 @@
+import:
+  - imports-level-3
+  - imports-level-3a
+
+vars:
+  region: us-east-2
+  environment: ue2
+
+terraform:
+  vars:
+    var_1: 1_override
+    var_2: 2_override
+
+helmfile:
+  vars:
+    var_1: 1
+    var_2: 2

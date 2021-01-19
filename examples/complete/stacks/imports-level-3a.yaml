@@ -1,0 +1,33 @@
+vars:
+  level: 3
+
+terraform:
+  vars:
+    var_1: 1a
+    var_2: 2a
+    var_3: 3a
+
+  backend_type: s3 # s3, remote, vault, etc.
+
+  backend:
+    s3:
+      encrypt: true
+      dynamodb_table: "eg-ue2-root-tfstate-lock"
+      role_arn: "arn:aws:iam::xxxxxxxxxxxx:role/eg-gbl-root-terraform"
+      acl: "bucket-owner-full-control"
+      bucket: "eg-ue2-root-tfstate"
+      key: "terraform.tfstate"
+      region: "us-east-2"
+    remote:
+      organization: company
+      workspace: ws1
+    vault: {}
+
+components:
+  terraform:
+    vpc:
+      vars:
+        availability_zones: ["us-east-2a", "us-east-2b", "us-east-2c"]
+
+helmfile:
+  vars: {}
