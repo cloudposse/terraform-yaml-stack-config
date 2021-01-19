@@ -90,47 +90,18 @@ references:
 
 # Short description of this project
 description: |-
-  Terraform module to convert local and remote YAML configuration templates into deep-merged
-  [Terraform](https://www.terraform.io/) and [helmfile](https://github.com/roboll/helmfile) stack configs.
+  Terraform module that accepts local or remote YAML stack configurations
+  and returns deep-merged variables, backend config, and remote state outputs for Terraform and helmfile components.
 
 # Introduction to the project
 introduction: |-
 
-  The module accepts the following:
+  The module has three sub-modules:
 
-  - Paths to local and remote YAML configuration template files for [Terraform](https://www.terraform.io/) and [helmfile](https://github.com/roboll/helmfile) stacks
-  - Map of parameters for interpolation within the YAML config templates (optional)
-  - Component type (`terraform` or `helmfile`) for which to return configurations
-  - Component name for which to return the configurations (deep merged variables and Terraform backend attributes)
-
-  The module supports a top-level `import` attribute in  YAML configuration templates, which will include the files and perform deep merging.
-  Up to 10 levels of imports are supported, and all imported maps are deep merged into a final stack configuration map.
-
-  For example, if you have a config file like this (e.g. `myconfig.yaml`):
-
-    ```yaml
-      import:
-        - file1
-        - file2
-    ```
-
-  Then, the module will deep merge `file1.yaml` and `file2.yaml` into `myconfig.yaml`.
-
-  __Note:__ Do not include the extensions (e.g. `.yaml`) in the imports.
-
-  The module performs two-phase deep merging:
-
-  - All maps from the provided and all imported YAML config files are deep merged first into the final stack configuration
-  - The `vars` and `backend` sections from different parts of YAML configs are then deep merged into the final variables and Terraform backend configurations
-    for the specified component type and component name
-
-  The module returns the following:
-
-  - List of all imported files
-  - The final deep merged stack configuration from all provided and imported YAML files
-  - The final configuration of all variables (`vars`) for the specified component type and component name
-  - The final configuration of all Terraform backend attributes (`backend`) for the specified component
-
+    - [vars](modules/vars) - accepts stack configuration and returns deep-merged variables for a Terraform or helmfile component.
+    - [backend](modules/backend) - accepts stack configuration and returns backend config for a Terraform component.
+    - [remote-state](modules/remote-state) - accepts stack configuration and returns remote state outputs for a Terraform component.
+      The module supports `s3` and `remote` (Terraform Cloud) backends.
 
   ### Attributions
 
@@ -142,94 +113,147 @@ introduction: |-
 usage: |-
   For a complete example, see [examples/complete](examples/complete).
 
-  For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest)
-  (which tests and deploys the example on Datadog), see [test](test).
+  For an example on how to configure remote state for Terraform components in YAML config files and then read the components outputs from the remote state,
+  see [examples/remote-state](examples/remote-state).
+
+  For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest),
+  see [test](test).
 
 
 # Example usage
 examples: |-
 
+  ### Complete example
+
+  This example accepts a stack config `my-stack` (which in turn imports other YAML config dependencies)
+  and returns variables, backend config, and imports for stack `my-stack` and Terraform component `my-vpc`.
+
   ```hcl
-  module "yaml_stack_config" {
+  module "stack_config" {
     source = "cloudposse/stack-config/yaml"
     # Cloud Posse recommends pinning every module to a specific version
     # version     = "x.x.x"
 
-    map_config_local_base_path = "./config"
+    stack_config_local_path = "./config"
+    stack                   = "my-stack"
+  }
 
-    map_config_paths = [
-      "my-stack.yaml"
-    ]
+  module "vars" {
+    source = "cloudposse/stack-config/yaml//modules/vars"
+    # version     = "x.x.x"
 
-    component_type = "terraform"
+    config         = module.stack_config.config
     component      = "my-vpc"
+  }
 
-    context = module.this.context
+  module "backend" {
+    source = "cloudposse/stack-config/yaml//modules/backend"
+    # version     = "x.x.x"
+
+    config         = module.stack_config.config
+    component      = "my-vpc"
   }
   ```
 
-  The example returns the following `vars`, `backend`, and `import` configurations for the Terraform `my-vpc` component from the stack `my-stack`:
+  The example returns the following `vars`, `backend`, and `import` configurations for `my-stack` stack and `my-vpc` Terraform component:
 
-    ```yaml
-      vars = {
-        "availability_zones" = [
-          "us-east-2a",
-          "us-east-2b",
-          "us-east-2c",
-        ]
-        "cidr_block" = "10.132.0.0/18"
-        "environment" = "ue2"
-        "level" = 3
-        "namespace" = "eg"
-        "param" = "param4"
-        "region" = "us-east-2"
-        "stage" = "prod"
-        "subnet_type_tag_key" = "example/subnet/type"
-        "test_map" = {
-          "a" = "a_override_2"
-          "b" = "b_override"
-          "c" = [
-            1,
-            2,
-            3,
-          ]
-          "map2" = {
-            "atr1" = 1
-            "atr2" = 2
-            "atr3" = [
-              "3a",
-              "3b",
-              "3c",
-            ]
-          }
-        }
-        "var_1" = "1_override"
-        "var_2" = "2_override"
-        "var_3" = "3a"
-      }
-
-      backend_type = s3
-
-      backend = {
-        "acl" = "bucket-owner-full-control"
-        "bucket" = "eg-ue2-root-tfstate"
-        "dynamodb_table" = "eg-ue2-root-tfstate-lock"
-        "encrypt" = true
-        "key" = "terraform.tfstate"
-        "region" = "us-east-2"
-        "role_arn" = "arn:aws:iam::xxxxxxxxxxxx:role/eg-gbl-root-terraform"
-        "workspace_key_prefix" = "vpc"
-      }
-
-      all_imports_list = [
-        "imports-level-2.yaml",
-        "imports-level-3.yaml",
-        "imports-level-3a.yaml",
-        "imports-level-4.yaml",
+  ```hcl
+    vars = {
+      "availability_zones" = [
+        "us-east-2a",
+        "us-east-2b",
+        "us-east-2c",
       ]
+      "cidr_block" = "10.132.0.0/18"
+      "environment" = "ue2"
+      "level" = 3
+      "namespace" = "eg"
+      "param" = "param4"
+      "region" = "us-east-2"
+      "stage" = "prod"
+      "subnet_type_tag_key" = "example/subnet/type"
+      "test_map" = {
+        "a" = "a_override_2"
+        "b" = "b_override"
+        "c" = [
+          1,
+          2,
+          3,
+        ]
+        "map2" = {
+          "atr1" = 1
+          "atr2" = 2
+          "atr3" = [
+            "3a",
+            "3b",
+            "3c",
+          ]
+        }
+      }
+      "var_1" = "1_override"
+      "var_2" = "2_override"
+      "var_3" = "3a"
+    }
+
+    backend_type = s3
+
+    backend = {
+      "acl" = "bucket-owner-full-control"
+      "bucket" = "eg-ue2-root-tfstate"
+      "dynamodb_table" = "eg-ue2-root-tfstate-lock"
+      "encrypt" = true
+      "key" = "terraform.tfstate"
+      "region" = "us-east-2"
+      "role_arn" = "arn:aws:iam::xxxxxxxxxxxx:role/eg-gbl-root-terraform"
+      "workspace_key_prefix" = "vpc"
+    }
+
+    all_imports_list = [
+      "imports-level-2.yaml",
+      "imports-level-3.yaml",
+      "imports-level-3a.yaml",
+      "imports-level-4.yaml",
+    ]
   ```
 
   See [examples/complete](examples/complete) for more details.
+
+
+  ### Remote state example
+
+  This example accepts a stack config `my-stack` (which in turn imports other YAML config dependencies)
+  and returns remote state outputs from the `s3` backend for `my-vpc` and `eks` Terraform components.
+
+  __NOTE:__ The backend type (`s3`) and backend configuration for the components are defined in the stack YAML config files.
+
+  ```hcl
+  module "stack_config" {
+    source = "cloudposse/stack-config/yaml"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version     = "x.x.x"
+
+    stack_config_local_path = "./config"
+    stack                   = "my-stack"
+  }
+
+  module "remote_state_my_vpc" {
+    source = "cloudposse/stack-config/yaml//modules/remote-state"
+    # version     = "x.x.x"
+
+    config    = module.stack_config.config
+    component = "my-vpc"
+  }
+
+  module "remote_state_eks" {
+    source = "cloudposse/stack-config/yaml//modules/remote-state"
+    # version     = "x.x.x"
+
+    config    = module.stack_config.config
+    component = "eks"
+  }
+  ```
+
+  See [examples/remote-state](examples/remote-state) for more details.
 
 # How to get started quickly
 #quickstart: |-
