@@ -17,7 +17,7 @@ locals {
   ]
 }
 
-module "yaml_config_backend" {
+module "backend" {
   source = "../deepmerge"
   maps   = local.backend
 }

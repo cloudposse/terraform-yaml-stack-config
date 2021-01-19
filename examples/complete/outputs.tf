@@ -1,10 +1,10 @@
 output "configs" {
-  value       = module.yaml_stack_config.config
+  value       = module.stack_config.config
   description = "Stack configs"
 }
 
 output "imports" {
-  value       = module.yaml_stack_config.imports
+  value       = module.stack_config.imports
   description = "List of all imported YAML files"
 }
 

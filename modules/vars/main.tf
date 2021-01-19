@@ -10,7 +10,7 @@ locals {
   ]
 }
 
-module "deepmerge_vars" {
+module "vars" {
   source = "../deepmerge"
   maps   = local.vars
 }

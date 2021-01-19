@@ -1,0 +1,16 @@
+vars: {}
+
+terraform:
+  vars: {}
+
+helmfile:
+  vars: {}
+
+components:
+  terraform:
+    vpc:
+      vars:
+        subnet_type_tag_key: "example/subnet/type"
+      backend:
+        s3:
+          workspace_key_prefix: "vpc"

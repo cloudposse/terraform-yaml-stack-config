@@ -1,4 +1,4 @@
-module "yaml_stack_config" {
+module "stack_config" {
   source = "../../"
 
   stack_config_local_path = var.stack_config_local_path
@@ -11,7 +11,7 @@ module "yaml_stack_config" {
 module "vars" {
   source = "../../modules/vars"
 
-  config         = module.yaml_stack_config.config
+  config         = module.stack_config.config
   component_type = var.component_type
   component      = var.component
 }
@@ -19,7 +19,7 @@ module "vars" {
 module "backend" {
   source = "../../modules/backend"
 
-  config         = module.yaml_stack_config.config
+  config         = module.stack_config.config
   component_type = var.component_type
   component      = var.component
 }
