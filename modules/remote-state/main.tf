@@ -1,8 +1,7 @@
-module "backend" {
+module "backend_config" {
   source         = "../backend"
   config         = var.config
   component_type = var.component_type
-  component      = var.component
 }
 
 module "vars" {
@@ -13,8 +12,8 @@ module "vars" {
 }
 
 locals {
-  backend_type = module.backend.backend_type
-  backend      = module.backend.backend
+  backend_type = module.backend_config.backend_type
+  backend      = module.backend_config.backend
   vars         = module.vars.vars
 
   environment = coalesce(module.this.environment, local.vars.environment)
