@@ -4,23 +4,12 @@ module "backend_config" {
   component_type = var.component_type
 }
 
-module "vars" {
-  source         = "../vars"
-  config         = var.config
-  component_type = var.component_type
-  component      = var.component
-}
-
 locals {
   backend_type = module.backend_config.backend_type
   backend      = module.backend_config.backend
-  vars         = module.vars.vars
 
-  environment = coalesce(module.this.environment, local.vars.environment)
-  stage       = coalesce(module.this.stage, local.vars.stage)
-
-  workspace_from_environment_stage = var.include_component_in_workspace_name ? format("%s-%s-%s", local.environment, local.stage, var.component) : (
-    format("%s-%s", local.environment, local.stage)
+  workspace_from_environment_stage = var.include_component_in_workspace_name ? format("%s-%s-%s", module.this.environment, module.this.stage, var.component) : (
+    format("%s-%s", module.this.environment, module.this.stage)
   )
 
   workspace = var.workspace != null ? var.workspace : (
