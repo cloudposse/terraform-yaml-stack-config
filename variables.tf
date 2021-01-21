@@ -13,6 +13,7 @@ variable "stack_config_remote_path" {
 variable "stack" {
   type        = string
   description = "Stack name"
+  default     = null
 }
 
 variable "parameters" {
