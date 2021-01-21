@@ -1,9 +1,19 @@
+locals {
+  s3_workspace_from_environment_stage = var.include_component_in_workspace_name ? format("%s-%s-%s", module.this.environment, module.this.stage, var.component) : (
+    format("%s-%s", module.this.environment, module.this.stage)
+  )
+
+  s3_workspace = var.workspace != null ? var.workspace : (
+    try(local.backend.workspace, null) != null ? local.backend.workspace : local.s3_workspace_from_environment_stage
+  )
+}
+
 data "terraform_remote_state" "s3" {
   count = local.backend_type == "s3" ? 1 : 0
 
   backend = "s3"
 
-  workspace = local.workspace
+  workspace = local.s3_workspace
 
   config = {
     encrypt              = local.backend.encrypt
