@@ -4,7 +4,7 @@ locals {
 
 module "yaml_config" {
   source  = "cloudposse/config/yaml"
-  version = "0.7.0"
+  version = "0.6.0"
 
   map_config_local_base_path  = var.stack_config_local_path
   map_config_remote_base_path = var.stack_config_remote_path
