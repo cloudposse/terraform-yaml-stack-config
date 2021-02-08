@@ -48,9 +48,18 @@ categories:
   - stacks
   - helm
   - helmfile
+  - provider
+  - terraform-provider
+  - deep-merge
+  - backend
+  - s3
+  - backend-s3
 
 # List any related terraform modules that this module may be used with or that this module depends on.
 related:
+  - name: "terraform-provider-utils"
+    description: "The Cloud Posse Terraform Provider for various utilities."
+    url: "https://github.com/cloudposse/terraform-provider-utils"
   - name: "terraform-yaml-config"
     description: "Terraform module to convert local and remote YAML configuration templates into Terraform lists and maps."
     url: "https://github.com/cloudposse/terraform-yaml-config"
@@ -84,9 +93,6 @@ references:
   - name: "Terraform `template_file` data source"
     description: "The `template_file` data source renders a template from a template string, which is usually loaded from an external file."
     url: "https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file"
-  - name: "Deepmerge"
-    description: "Terraform module to perform a deep map merge of standard Terraform maps and objects."
-    url: "https://github.com/Imperative-Systems-Inc/terraform-modules/tree/master/deepmerge"
 
 # Short description of this project
 description: |-
