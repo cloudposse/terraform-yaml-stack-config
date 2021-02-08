@@ -33,7 +33,7 @@ and returns variables and backend config for stack `my-stack` and Terraform comp
     }
   ```
 
-The example returns the following `vars`, and `backend` configurations for `my-stack` stack and `my-vpc` Terraform component:
+The example returns the following `vars` and `backend` configurations for `my-stack` stack and `my-vpc` Terraform component:
 
 ```hcl
   vars = {

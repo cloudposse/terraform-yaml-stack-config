@@ -27,8 +27,8 @@
 
 -->
 
-Terraform module that loads an opinionated ["stack" configuration](#examples) from local or remote YAML sources
-using the [`cloudposse/terraform-yaml-config`](https://github.com/cloudposse/terraform-yaml-config) module.
+Terraform module that loads and processes an opinionated ["stack" configuration](#examples) from YAML sources
+using the [`terraform-provider-utils`](https://github.com/cloudposse/terraform-provider-utils) Terraform provider.
 
 It supports deep-merged variables, backend config, and remote state outputs for Terraform and helmfile components.
 
@@ -73,12 +73,6 @@ The module is composed of three sub-modules:
   - [remote-state](modules/remote-state) - accepts stack configuration and returns remote state outputs for a Terraform component.
     The module supports `s3` and `remote` (Terraform Cloud) backends.
 
-### Attributions
-
-Big thanks to [Imperative Systems Inc.](https://github.com/Imperative-Systems-Inc)
-for the excellent [deepmerge](https://github.com/Imperative-Systems-Inc/terraform-modules/tree/master/deepmerge) Terraform module
-to perform a deep map merge of standard Terraform maps and objects.
-
 ## Security & Compliance [<img src="https://cloudposse.com/wp-content/uploads/2020/11/bridgecrew.svg" width="250" align="right" />](https://bridgecrew.io/)
 
 Security scanning is graciously provided by Bridgecrew. Bridgecrew is the leading fully hosted, cloud-native solution providing continuous Terraform security and compliance.
@@ -114,11 +108,14 @@ The table below correctly indicates which inputs are required.
 
 For a complete example, see [examples/complete](examples/complete).
 
+For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest),
+see [test](test).
+
 For an example on how to configure remote state for Terraform components in YAML config files and then read the components outputs from the remote state,
 see [examples/remote-state](examples/remote-state).
 
-For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest),
-see [test](test).
+For an example on how to process `vars` and `backend` configurations for all Terraform and helmfile components for a list of stacks,
+see [examples/stacks](examples/stacks).
 
 
 
