@@ -7,10 +7,13 @@
 | external | >= 2.0 |
 | local | >= 1.3 |
 | template | >= 2.2 |
+| utils | >= 0.2.0 |
 
 ## Providers
 
-No provider.
+| Name | Version |
+|------|---------|
+| utils | >= 0.2.0 |
 
 ## Inputs
 
@@ -28,11 +31,9 @@ No provider.
 | label\_value\_case | The letter case of output label values (also used in `tags` and `id`).<br>Possible values: `lower`, `title`, `upper` and `none` (no transformation).<br>Default value: `lower`. | `string` | `null` | no |
 | name | Solution name, e.g. 'app' or 'jenkins' | `string` | `null` | no |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `null` | no |
-| parameters | Map of parameters for interpolation within the YAML config templates | `map(string)` | `{}` | no |
 | regex\_replace\_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
-| stack | Stack name | `string` | `null` | no |
-| stack\_config\_local\_path | Path to local stack configs | `string` | `""` | no |
-| stack\_config\_remote\_path | Path to remote stack configs | `string` | `""` | no |
+| stack\_config\_local\_path | Path to local stack configs | `string` | n/a | yes |
+| stacks | A list of stack names | `list(string)` | n/a | yes |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 
@@ -40,7 +41,6 @@ No provider.
 
 | Name | Description |
 |------|-------------|
-| config | Stack config |
-| imports | List of all imported YAML files |
+| config | Stack configurations |
 
 <!-- markdownlint-restore -->
