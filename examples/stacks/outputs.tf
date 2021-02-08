@@ -1,4 +1,4 @@
 output "config" {
-  value       = local.config
+  value       = module.stacks.config
   description = "Stack configurations"
 }

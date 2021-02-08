@@ -38,9 +38,4 @@ func TestExamplesComplete(t *testing.T) {
 	backend := terraform.OutputMap(t, terraformOptions, "backend")
 	// Verify we're getting back the outputs we expect
 	assert.Greater(t, len(backend), 0)
-
-	// Run `terraform output` to get the value of an output variable
-	imports := terraform.OutputList(t, terraformOptions, "imports")
-	// Verify we're getting back the outputs we expect
-	assert.Greater(t, len(imports), 1)
 }

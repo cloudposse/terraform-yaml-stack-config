@@ -8,12 +8,6 @@ variable "stack" {
   description = "Stack name"
 }
 
-variable "parameters" {
-  type        = map(string)
-  description = "Map of parameters for interpolation within the YAML config templates"
-  default     = {}
-}
-
 variable "component_type" {
   type        = string
   description = "Component type"

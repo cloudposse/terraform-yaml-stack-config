@@ -1,9 +1,9 @@
 output "backend_type" {
   value       = local.backend_type
-  description = "Backend type"
+  description = "Backend type for the component"
 }
 
 output "backend" {
-  value       = module.backend.merged
+  value       = local.backend
   description = "Backend configuration for the component"
 }

@@ -1,4 +1,4 @@
 output "vars" {
-  value       = module.vars.merged
-  description = "Vars configuration for a component"
+  value       = local.vars
+  description = "Vars configuration for the component"
 }

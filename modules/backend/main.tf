@@ -1,23 +1,12 @@
 locals {
-  component = try(var.config["components"][var.component_type][var.component]["component"], null)
-
-  backend_type = coalesce(
-    try(var.config["backend_type"], null),
-    try(var.config[var.component_type]["backend_type"], null),
-    try(var.config["components"][var.component_type][var.component]["backend_type"], null),
-    "s3"
-  )
-
-  # Deep-merge all backend attributes in this order: global-scoped, component-type-scoped, component-scoped, component-instance-scoped
-  backend = [
-    try(var.config["backend"][local.backend_type], {}),
-    try(var.config[var.component_type]["backend"][local.backend_type], {}),
-    try(var.config["components"][var.component_type][local.component]["backend"][local.backend_type], {}),
-    try(var.config["components"][var.component_type][var.component]["backend"][local.backend_type], {})
-  ]
+  stack = var.stack != null ? var.stack : format("%s-%s", module.this.environment, module.this.stage)
 }
 
-module "backend" {
-  source = "../deepmerge"
-  maps   = local.backend
+data "utils_stack_config_yaml" "config" {
+  input = [format("%s/%s.yaml", var.stack_config_local_path, local.stack)]
+}
+
+locals {
+  backend_type = yamldecode(data.utils_stack_config_yaml.config.output[0])["components"][var.component_type][var.component]["backend_type"]
+  backend      = yamldecode(data.utils_stack_config_yaml.config.output[0])["components"][var.component_type][var.component]["backend"]
 }

@@ -1,7 +1,12 @@
 module "backend_config" {
-  source         = "../backend"
-  config         = var.config
-  component_type = var.component_type
+  source = "../backend"
+
+  stack_config_local_path = var.stack_config_local_path
+  stack                   = var.stack
+  component               = var.component
+  component_type          = var.component_type
+
+  context = module.this.context
 }
 
 locals {

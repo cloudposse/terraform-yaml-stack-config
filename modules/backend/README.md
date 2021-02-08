@@ -5,36 +5,35 @@ Terraform module that accepts stack configuration and returns backend config for
 ## Usage
 
 The following example loads the stack config `my-stack` (which in turn imports other YAML config dependencies)
-and returns variables, backend config, and imports for stack `my-stack` and Terraform component `my-vpc`.
+and returns variables and backend config for stack `my-stack` and Terraform component `my-vpc`.
 
   ```hcl
-  module "stack_config" {
-    source = "cloudposse/stack-config/yaml"
-    # Cloud Posse recommends pinning every module to a specific version
-    # version     = "x.x.x"
-
-    stack_config_local_path = "./config"
-    stack                   = "my-stack"
-  }
-
-  module "vars" {
-    source = "cloudposse/stack-config/yaml//modules/vars"
-    # version     = "x.x.x"
-
-    config         = module.stack_config.config
-    component      = "my-vpc"
-  }
-
-  module "backend" {
-    source = "cloudposse/stack-config/yaml//modules/backend"
-    # version     = "x.x.x"
-
-    config         = module.stack_config.config
-    component      = "my-vpc"
-  }
+    module "vars" {
+      source = "cloudposse/stack-config/yaml//modules/vars"
+      # version     = "x.x.x"
+    
+      stack_config_local_path = "./stacks"
+      stack                   = "my-stack"
+      component_type          = "terraform"
+      component               = "my-vpc"
+    
+      context = module.this.context
+    }
+    
+    module "backend" {
+      source = "cloudposse/stack-config/yaml//modules/backend"
+      # version     = "x.x.x"
+    
+      stack_config_local_path = "./stacks"
+      stack                   = "my-stack"
+      component_type          = "terraform"
+      component               = "my-vpc"
+    
+      context = module.this.context
+    }
   ```
 
-The example returns the following `vars`, `backend`, and `import` configurations for `my-stack` stack and `my-vpc` Terraform component:
+The example returns the following `vars` and `backend` configurations for `my-stack` stack and `my-vpc` Terraform component:
 
 ```hcl
   vars = {
@@ -86,13 +85,6 @@ The example returns the following `vars`, `backend`, and `import` configurations
     "role_arn" = "arn:aws:iam::xxxxxxxxxxxx:role/eg-gbl-root-terraform"
     "workspace_key_prefix" = "vpc"
   }
-
-  all_imports_list = [
-    "imports-level-2.yaml",
-    "imports-level-3.yaml",
-    "imports-level-3a.yaml",
-    "imports-level-4.yaml",
-  ]
 ```
 
 See [examples/complete](../../examples/complete) for more details.

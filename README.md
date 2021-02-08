@@ -27,8 +27,8 @@
 
 -->
 
-Terraform module that loads an opinionated ["stack" configuration](#examples) from local or remote YAML sources
-using the [`cloudposse/terraform-yaml-config`](https://github.com/cloudposse/terraform-yaml-config) module.
+Terraform module that loads and processes an opinionated ["stack" configuration](#examples) from YAML sources
+using the [`terraform-provider-utils`](https://github.com/cloudposse/terraform-provider-utils) Terraform provider.
 
 It supports deep-merged variables, backend config, and remote state outputs for Terraform and helmfile components.
 
@@ -73,11 +73,24 @@ The module is composed of three sub-modules:
   - [remote-state](modules/remote-state) - accepts stack configuration and returns remote state outputs for a Terraform component.
     The module supports `s3` and `remote` (Terraform Cloud) backends.
 
-### Attributions
+## Security & Compliance [<img src="https://cloudposse.com/wp-content/uploads/2020/11/bridgecrew.svg" width="250" align="right" />](https://bridgecrew.io/)
 
-Big thanks to [Imperative Systems Inc.](https://github.com/Imperative-Systems-Inc)
-for the excellent [deepmerge](https://github.com/Imperative-Systems-Inc/terraform-modules/tree/master/deepmerge) Terraform module
-to perform a deep map merge of standard Terraform maps and objects.
+Security scanning is graciously provided by Bridgecrew. Bridgecrew is the leading fully hosted, cloud-native solution providing continuous Terraform security and compliance.
+
+| Benchmark | Description |
+|--------|---------------|
+| [![Infrastructure Security](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-yaml-stack-config/general)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-yaml-stack-config&benchmark=INFRASTRUCTURE+SECURITY) | Infrastructure Security Compliance |
+| [![CIS KUBERNETES](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-yaml-stack-config/cis_kubernetes)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-yaml-stack-config&benchmark=CIS+KUBERNETES+V1.5) | Center for Internet Security, KUBERNETES Compliance |
+| [![CIS AWS](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-yaml-stack-config/cis_aws)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-yaml-stack-config&benchmark=CIS+AWS+V1.2) | Center for Internet Security, AWS Compliance |
+| [![CIS AZURE](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-yaml-stack-config/cis_azure)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-yaml-stack-config&benchmark=CIS+AZURE+V1.1) | Center for Internet Security, AZURE Compliance |
+| [![PCI-DSS](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-yaml-stack-config/pci)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-yaml-stack-config&benchmark=PCI-DSS+V3.2) | Payment Card Industry Data Security Standards Compliance |
+| [![NIST-800-53](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-yaml-stack-config/nist)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-yaml-stack-config&benchmark=NIST-800-53) | National Institute of Standards and Technology Compliance |
+| [![ISO27001](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-yaml-stack-config/iso)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-yaml-stack-config&benchmark=ISO27001) | Information Security Management System, ISO/IEC 27001 Compliance |
+| [![SOC2](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-yaml-stack-config/soc2)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-yaml-stack-config&benchmark=SOC2)| Service Organization Control 2 Compliance |
+| [![CIS GCP](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-yaml-stack-config/cis_gcp)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-yaml-stack-config&benchmark=CIS+GCP+V1.1) | Center for Internet Security, GCP Compliance |
+| [![HIPAA](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-yaml-stack-config/hipaa)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-yaml-stack-config&benchmark=HIPAA) | Health Insurance Portability and Accountability Compliance |
+
+
 
 ## Usage
 
@@ -95,11 +108,14 @@ The table below correctly indicates which inputs are required.
 
 For a complete example, see [examples/complete](examples/complete).
 
+For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest),
+see [test](test).
+
 For an example on how to configure remote state for Terraform components in YAML config files and then read the components outputs from the remote state,
 see [examples/remote-state](examples/remote-state).
 
-For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest),
-see [test](test).
+For an example on how to process `vars` and `backend` configurations for all Terraform and helmfile components for a list of stacks,
+see [examples/stacks](examples/stacks).
 
 
 
@@ -107,7 +123,7 @@ see [test](test).
 ## Examples
 
 
-Here's an example stack configuration file:
+Here's an example of a stack configuration file:
 
 ```yaml
   import:
@@ -142,36 +158,35 @@ The `import` section refers to other stack configurations that are automatically
 ### Complete example
 
 This example loads the stack config `my-stack` (which in turn imports other YAML config dependencies)
-and returns variables, backend config, and imports for stack `my-stack` and Terraform component `my-vpc`.
+and returns variables and backend config for the Terraform component `my-vpc` from the stack `my-stack`.
 
 ```hcl
-module "stack_config" {
-  source = "cloudposse/stack-config/yaml"
-  # Cloud Posse recommends pinning every module to a specific version
-  # version     = "x.x.x"
+  module "vars" {
+    source = "cloudposse/stack-config/yaml//modules/vars"
+    # version     = "x.x.x"
 
-  stack_config_local_path = "./config"
-  stack                   = "my-stack"
-}
+    stack_config_local_path = "./stacks"
+    stack                   = "my-stack"
+    component_type          = "terraform"
+    component               = "my-vpc"
 
-module "vars" {
-  source = "cloudposse/stack-config/yaml//modules/vars"
-  # version     = "x.x.x"
+    context = module.this.context
+  }
 
-  config         = module.stack_config.config
-  component      = "my-vpc"
-}
+  module "backend" {
+    source = "cloudposse/stack-config/yaml//modules/backend"
+    # version     = "x.x.x"
 
-module "backend" {
-  source = "cloudposse/stack-config/yaml//modules/backend"
-  # version     = "x.x.x"
+    stack_config_local_path = "./stacks"
+    stack                   = "my-stack"
+    component_type          = "terraform"
+    component               = "my-vpc"
 
-  config         = module.stack_config.config
-  component      = "my-vpc"
-}
+    context = module.this.context
+  }
 ```
 
-The example returns the following `vars`, `backend`, and `import` configurations for `my-stack` stack and `my-vpc` Terraform component:
+The example returns the following `vars` and `backend` configurations for the `my-vpc` Terraform component:
 
 ```hcl
   vars = {
@@ -223,13 +238,6 @@ The example returns the following `vars`, `backend`, and `import` configurations
     "role_arn" = "arn:aws:iam::xxxxxxxxxxxx:role/eg-gbl-root-terraform"
     "workspace_key_prefix" = "vpc"
   }
-
-  all_imports_list = [
-    "imports-level-2.yaml",
-    "imports-level-3.yaml",
-    "imports-level-3a.yaml",
-    "imports-level-4.yaml",
-  ]
 ```
 
 See [examples/complete](examples/complete) for more details.
@@ -243,30 +251,25 @@ and returns remote state outputs from the `s3` backend for `my-vpc` and `eks` Te
 __NOTE:__ The backend type (`s3`) and backend configuration for the components are defined in the stack YAML config files.
 
 ```hcl
-module "stack_config" {
-  source = "cloudposse/stack-config/yaml"
-  # Cloud Posse recommends pinning every module to a specific version
-  # version     = "x.x.x"
+  module "remote_state_my_vpc" {
+    source = "cloudposse/stack-config/yaml"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version     = "x.x.x"
 
-  stack_config_local_path = "./config"
-  stack                   = "my-stack"
-}
+    stack_config_local_path = "./stacks"
+    stack                   = "my-stack"
+    component               = "my-vpc"
+  }
 
-module "remote_state_my_vpc" {
-  source = "cloudposse/stack-config/yaml//modules/remote-state"
-  # version     = "x.x.x"
+  module "remote_state_eks" {
+    source = "cloudposse/stack-config/yaml"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version     = "x.x.x"
 
-  config    = module.stack_config.config
-  component = "my-vpc"
-}
-
-module "remote_state_eks" {
-  source = "cloudposse/stack-config/yaml//modules/remote-state"
-  # version     = "x.x.x"
-
-  config    = module.stack_config.config
-  component = "eks"
-}
+    stack_config_local_path = "./stacks"
+    stack                   = "my-stack"
+    component               = "eks"
+  }
 ```
 
 See [examples/remote-state](examples/remote-state) for more details.
@@ -292,13 +295,15 @@ Available targets:
 |------|---------|
 | terraform | >= 0.13.0 |
 | external | >= 2.0 |
-| http | >= 2.0 |
 | local | >= 1.3 |
 | template | >= 2.2 |
+| utils | >= 0.2.0 |
 
 ## Providers
 
-No provider.
+| Name | Version |
+|------|---------|
+| utils | >= 0.2.0 |
 
 ## Inputs
 
@@ -306,19 +311,19 @@ No provider.
 |------|-------------|------|---------|:--------:|
 | additional\_tag\_map | Additional tags for appending to tags\_as\_list\_of\_maps. Not added to `tags`. | `map(string)` | `{}` | no |
 | attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
-| context | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | <pre>object({<br>    enabled             = bool<br>    namespace           = string<br>    environment         = string<br>    stage               = string<br>    name                = string<br>    delimiter           = string<br>    attributes          = list(string)<br>    tags                = map(string)<br>    additional_tag_map  = map(string)<br>    regex_replace_chars = string<br>    label_order         = list(string)<br>    id_length_limit     = number<br>  })</pre> | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_order": [],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
+| context | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
 | delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | enabled | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
 | environment | Environment, e.g. 'uw2', 'us-west-2', OR 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
-| id\_length\_limit | Limit `id` to this many characters.<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
+| id\_length\_limit | Limit `id` to this many characters (minimum 6).<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
+| label\_key\_case | The letter case of label keys (`tag` names) (i.e. `name`, `namespace`, `environment`, `stage`, `attributes`) to use in `tags`.<br>Possible values: `lower`, `title`, `upper`.<br>Default value: `title`. | `string` | `null` | no |
 | label\_order | The naming order of the id output and Name tag.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 5 elements, but at least one must be present. | `list(string)` | `null` | no |
+| label\_value\_case | The letter case of output label values (also used in `tags` and `id`).<br>Possible values: `lower`, `title`, `upper` and `none` (no transformation).<br>Default value: `lower`. | `string` | `null` | no |
 | name | Solution name, e.g. 'app' or 'jenkins' | `string` | `null` | no |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `null` | no |
-| parameters | Map of parameters for interpolation within the YAML config templates | `map(string)` | `{}` | no |
 | regex\_replace\_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
-| stack | Stack name | `string` | `null` | no |
-| stack\_config\_local\_path | Path to local stack configs | `string` | `""` | no |
-| stack\_config\_remote\_path | Path to remote stack configs | `string` | `""` | no |
+| stack\_config\_local\_path | Path to local stack configs | `string` | n/a | yes |
+| stacks | A list of stack names | `list(string)` | n/a | yes |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 
@@ -326,8 +331,7 @@ No provider.
 
 | Name | Description |
 |------|-------------|
-| config | Stack config |
-| imports | List of all imported YAML files |
+| config | Stack configurations |
 
 <!-- markdownlint-restore -->
 
@@ -344,6 +348,7 @@ Are you using this project or any of our other projects? Consider [leaving a tes
 
 Check out these related projects.
 
+- [terraform-provider-utils](https://github.com/cloudposse/terraform-provider-utils) - The Cloud Posse Terraform Provider for various utilities.
 - [terraform-yaml-config](https://github.com/cloudposse/terraform-yaml-config) - Terraform module to convert local and remote YAML configuration templates into Terraform lists and maps.
 - [terraform-datadog-monitor](https://github.com/cloudposse/terraform-datadog-monitor) - Terraform module to configure and provision Datadog monitors from a YAML configuration, complete with automated tests.
 - [terraform-opsgenie-incident-management](https://github.com/cloudposse/terraform-opsgenie-incident-management) - Terraform module to provision Opsgenie resources from YAML configurations using the Opsgenie provider, complete with automated tests.
@@ -362,7 +367,6 @@ For additional context, refer to some of these links.
 - [Terraform Version Pinning](https://www.terraform.io/docs/configuration/terraform.html#specifying-a-required-terraform-version) - The required_version setting can be used to constrain which versions of the Terraform CLI can be used with your configuration.
 - [Terraform `templatefile` Function](https://www.terraform.io/docs/configuration/functions/templatefile.html) - `templatefile` reads the file at the given path and renders its content as a template using a supplied set of template variables.
 - [Terraform `template_file` data source](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) - The `template_file` data source renders a template from a template string, which is usually loaded from an external file.
-- [Deepmerge](https://github.com/Imperative-Systems-Inc/terraform-modules/tree/master/deepmerge) - Terraform module to perform a deep map merge of standard Terraform maps and objects.
 
 
 ## Help

@@ -12,30 +12,25 @@ and returns remote state outputs from the `s3` backend for `my-vpc` and `eks` Te
 __NOTE:__ The backend type (`s3`) and backend configuration for the components are defined in the stack YAML config files.
 
   ```hcl
-  module "stack_config" {
-    source = "cloudposse/stack-config/yaml"
-    # Cloud Posse recommends pinning every module to a specific version
-    # version     = "x.x.x"
-
-    stack_config_local_path = "./config"
-    stack                   = "my-stack"
-  }
-
-  module "remote_state_my_vpc" {
-    source = "cloudposse/stack-config/yaml//modules/remote-state"
-    # version     = "x.x.x"
-
-    config    = module.stack_config.config
-    component = "my-vpc"
-  }
-
-  module "remote_state_eks" {
-    source = "cloudposse/stack-config/yaml//modules/remote-state"
-    # version     = "x.x.x"
-
-    config    = module.stack_config.config
-    component = "eks"
-  }
+    module "remote_state_my_vpc" {
+      source = "cloudposse/stack-config/yaml"
+      # Cloud Posse recommends pinning every module to a specific version
+      # version     = "x.x.x"
+    
+      stack_config_local_path = "./stacks"
+      stack                   = "my-stack"
+      component               = "my-vpc"
+    }
+    
+    module "remote_state_eks" {
+      source = "cloudposse/stack-config/yaml"
+      # Cloud Posse recommends pinning every module to a specific version
+      # version     = "x.x.x"
+    
+      stack_config_local_path = "./stacks"
+      stack                   = "my-stack"
+      component               = "eks"
+    }
   ```
 
 See [examples/remote-state](../../examples/remote-state) for more details.
