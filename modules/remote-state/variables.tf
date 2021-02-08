@@ -1,6 +1,12 @@
-variable "config" {
-  type        = any
-  description = "Stack configuration"
+variable "stack_config_local_path" {
+  type        = string
+  description = "Path to local stack configs"
+}
+
+variable "stack" {
+  type        = string
+  description = "Stack name"
+  default     = null
 }
 
 variable "component_type" {
@@ -12,6 +18,7 @@ variable "component_type" {
 variable "component" {
   type        = string
   description = "Component"
+  default     = null
 }
 
 variable "privileged" {
