@@ -126,7 +126,7 @@ see [test](test).
 ## Examples
 
 
-Here's an example stack configuration file:
+Here's an example of a stack configuration file:
 
 ```yaml
   import:
@@ -161,36 +161,35 @@ The `import` section refers to other stack configurations that are automatically
 ### Complete example
 
 This example loads the stack config `my-stack` (which in turn imports other YAML config dependencies)
-and returns variables, backend config, and imports for stack `my-stack` and Terraform component `my-vpc`.
+and returns variables and backend config for the Terraform component `my-vpc` from the stack `my-stack`.
 
 ```hcl
-module "stack_config" {
-  source = "cloudposse/stack-config/yaml"
-  # Cloud Posse recommends pinning every module to a specific version
-  # version     = "x.x.x"
+  module "vars" {
+    source = "cloudposse/stack-config/yaml//modules/vars"
+    # version     = "x.x.x"
 
-  stack_config_local_path = "./config"
-  stack                   = "my-stack"
-}
+    stack_config_local_path = "./stacks"
+    stack                   = "my-stack"
+    component_type          = "terraform"
+    component               = "my-vpc"
 
-module "vars" {
-  source = "cloudposse/stack-config/yaml//modules/vars"
-  # version     = "x.x.x"
+    context = module.this.context
+  }
 
-  config         = module.stack_config.config
-  component      = "my-vpc"
-}
+  module "backend" {
+    source = "cloudposse/stack-config/yaml//modules/backend"
+    # version     = "x.x.x"
 
-module "backend" {
-  source = "cloudposse/stack-config/yaml//modules/backend"
-  # version     = "x.x.x"
+    stack_config_local_path = "./stacks"
+    stack                   = "my-stack"
+    component_type          = "terraform"
+    component               = "my-vpc"
 
-  config         = module.stack_config.config
-  component      = "my-vpc"
-}
+    context = module.this.context
+  }
 ```
 
-The example returns the following `vars`, `backend`, and `import` configurations for `my-stack` stack and `my-vpc` Terraform component:
+The example returns the following `vars` and `backend` configurations for the `my-vpc` Terraform component:
 
 ```hcl
   vars = {
@@ -242,13 +241,6 @@ The example returns the following `vars`, `backend`, and `import` configurations
     "role_arn" = "arn:aws:iam::xxxxxxxxxxxx:role/eg-gbl-root-terraform"
     "workspace_key_prefix" = "vpc"
   }
-
-  all_imports_list = [
-    "imports-level-2.yaml",
-    "imports-level-3.yaml",
-    "imports-level-3a.yaml",
-    "imports-level-4.yaml",
-  ]
 ```
 
 See [examples/complete](examples/complete) for more details.
@@ -262,30 +254,25 @@ and returns remote state outputs from the `s3` backend for `my-vpc` and `eks` Te
 __NOTE:__ The backend type (`s3`) and backend configuration for the components are defined in the stack YAML config files.
 
 ```hcl
-module "stack_config" {
-  source = "cloudposse/stack-config/yaml"
-  # Cloud Posse recommends pinning every module to a specific version
-  # version     = "x.x.x"
+  module "remote_state_my_vpc" {
+    source = "cloudposse/stack-config/yaml"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version     = "x.x.x"
 
-  stack_config_local_path = "./config"
-  stack                   = "my-stack"
-}
+    stack_config_local_path = "./stacks"
+    stack                   = "my-stack"
+    component               = "my-vpc"
+  }
 
-module "remote_state_my_vpc" {
-  source = "cloudposse/stack-config/yaml//modules/remote-state"
-  # version     = "x.x.x"
+  module "remote_state_eks" {
+    source = "cloudposse/stack-config/yaml"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version     = "x.x.x"
 
-  config    = module.stack_config.config
-  component = "my-vpc"
-}
-
-module "remote_state_eks" {
-  source = "cloudposse/stack-config/yaml//modules/remote-state"
-  # version     = "x.x.x"
-
-  config    = module.stack_config.config
-  component = "eks"
-}
+    stack_config_local_path = "./stacks"
+    stack                   = "my-stack"
+    component               = "eks"
+  }
 ```
 
 See [examples/remote-state](examples/remote-state) for more details.
