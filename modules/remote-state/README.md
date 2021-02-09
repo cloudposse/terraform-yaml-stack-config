@@ -13,7 +13,7 @@ __NOTE:__ The backend type (`s3`) and backend configuration for the components a
 
   ```hcl
     module "remote_state_my_vpc" {
-      source = "cloudposse/stack-config/yaml"
+      source = "cloudposse/stack-config/yaml//modules/remote-state"
       # Cloud Posse recommends pinning every module to a specific version
       # version     = "x.x.x"
     
@@ -23,7 +23,7 @@ __NOTE:__ The backend type (`s3`) and backend configuration for the components a
     }
     
     module "remote_state_eks" {
-      source = "cloudposse/stack-config/yaml"
+      source = "cloudposse/stack-config/yaml//modules/remote-state"
       # Cloud Posse recommends pinning every module to a specific version
       # version     = "x.x.x"
     
