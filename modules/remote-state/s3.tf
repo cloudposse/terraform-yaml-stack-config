@@ -1,5 +1,7 @@
 locals {
-  s3_workspace_from_environment_stage = var.include_component_in_workspace_name ? format("%s-%s-%s", module.this.environment, module.this.stage, var.component) : (
+  include_component_in_workspace_name = var.include_component_in_workspace_name == true || local.base_component != null
+
+  s3_workspace_from_environment_stage = local.include_component_in_workspace_name ? format("%s-%s-%s", module.this.environment, module.this.stage, var.component) : (
     format("%s-%s", module.this.environment, module.this.stage)
   )
 

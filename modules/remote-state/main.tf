@@ -10,8 +10,9 @@ module "backend_config" {
 }
 
 locals {
-  backend_type = module.backend_config.backend_type
-  backend      = module.backend_config.backend
+  backend_type   = module.backend_config.backend_type
+  backend        = module.backend_config.backend
+  base_component = module.backend_config.base_component
 
   remote_states = {
     s3     = data.terraform_remote_state.s3

@@ -16,6 +16,7 @@ components:
       component: vpc
       vars:
         cidr_block: "10.132.0.0/18"
+        test: false
     vpc:
       vars:
         cidr_block: "10.102.0.0/18"

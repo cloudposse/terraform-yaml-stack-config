@@ -41,6 +41,6 @@ variable "workspace" {
 
 variable "include_component_in_workspace_name" {
   type        = bool
-  description = "Whether to include the component name in the workspace name"
+  description = "Whether to include the component name in the workspace name. This variable, if set, overrides the `component` attribute in YAML stack configs"
   default     = false
 }
