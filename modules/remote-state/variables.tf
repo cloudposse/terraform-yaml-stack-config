@@ -35,7 +35,7 @@ variable "defaults" {
 
 variable "workspace" {
   type        = string
-  description = "Workspace"
+  description = "Workspace (this overrides the workspace calculated from `var.stack`, `var.environment` and `var.stage`)"
   default     = null
 }
 

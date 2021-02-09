@@ -1,5 +1,5 @@
 locals {
-  include_component_in_workspace_name = var.include_component_in_workspace_name == true || local.base_component != null || local.base_component != ""
+  include_component_in_workspace_name = var.include_component_in_workspace_name == true || local.base_component != ""
 
   s3_workspace_from_stack = local.include_component_in_workspace_name ? format("%s-%s", local.stack, var.component) : local.stack
 
