@@ -10,6 +10,8 @@ module "backend_config" {
 }
 
 locals {
+  stack = var.stack != null ? var.stack : format("%s-%s", module.this.environment, module.this.stage)
+
   backend_type   = module.backend_config.backend_type
   backend        = module.backend_config.backend
   base_component = module.backend_config.base_component

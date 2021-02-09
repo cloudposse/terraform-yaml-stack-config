@@ -1,6 +1,4 @@
 locals {
-  stack = var.stack != null ? var.stack : format("%s-%s", module.this.environment, module.this.stage)
-
   remote_workspace_from_stack = format("%s-%s", local.stack, var.component)
 
   remote_workspace = var.workspace != null ? var.workspace : (
