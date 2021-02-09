@@ -1,8 +1,8 @@
 locals {
-  remote_workspace_from_environment_stage = format("%s-%s-%s", module.this.environment, module.this.stage, var.component)
+  remote_workspace_from_stack = format("%s-%s", local.stack, var.component)
 
   remote_workspace = var.workspace != null ? var.workspace : (
-    try(local.backend.workspace, null) != null ? local.backend.workspace : local.remote_workspace_from_environment_stage
+    try(local.backend.workspace, null) != null ? local.backend.workspace : local.remote_workspace_from_stack
   )
 }
 

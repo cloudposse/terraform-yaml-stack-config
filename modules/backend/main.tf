@@ -7,6 +7,7 @@ data "utils_stack_config_yaml" "config" {
 }
 
 locals {
-  backend_type = yamldecode(data.utils_stack_config_yaml.config.output[0])["components"][var.component_type][var.component]["backend_type"]
-  backend      = yamldecode(data.utils_stack_config_yaml.config.output[0])["components"][var.component_type][var.component]["backend"]
+  backend_type   = yamldecode(data.utils_stack_config_yaml.config.output[0])["components"][var.component_type][var.component]["backend_type"]
+  backend        = yamldecode(data.utils_stack_config_yaml.config.output[0])["components"][var.component_type][var.component]["backend"]
+  base_component = try(yamldecode(data.utils_stack_config_yaml.config.output[0])["components"][var.component_type][var.component]["component"], "")
 }

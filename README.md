@@ -297,13 +297,13 @@ Available targets:
 | external | >= 2.0 |
 | local | >= 1.3 |
 | template | >= 2.2 |
-| utils | >= 0.2.0 |
+| utils | >= 0.2.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| utils | >= 0.2.0 |
+| utils | >= 0.2.1 |
 
 ## Inputs
 

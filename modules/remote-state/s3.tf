@@ -1,10 +1,10 @@
 locals {
-  s3_workspace_from_environment_stage = var.include_component_in_workspace_name ? format("%s-%s-%s", module.this.environment, module.this.stage, var.component) : (
-    format("%s-%s", module.this.environment, module.this.stage)
-  )
+  include_component_in_workspace_name = var.include_component_in_workspace_name == true || local.base_component != ""
+
+  s3_workspace_from_stack = local.include_component_in_workspace_name ? format("%s-%s", local.stack, var.component) : local.stack
 
   s3_workspace = var.workspace != null ? var.workspace : (
-    try(local.backend.workspace, null) != null ? local.backend.workspace : local.s3_workspace_from_environment_stage
+    try(local.backend.workspace, null) != null ? local.backend.workspace : local.s3_workspace_from_stack
   )
 }
 

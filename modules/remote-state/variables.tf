@@ -35,12 +35,12 @@ variable "defaults" {
 
 variable "workspace" {
   type        = string
-  description = "Workspace"
+  description = "Workspace (this overrides the workspace calculated from `var.stack`, `var.environment` and `var.stage`)"
   default     = null
 }
 
 variable "include_component_in_workspace_name" {
   type        = bool
-  description = "Whether to include the component name in the workspace name"
+  description = "Whether to include the component name in the workspace name. This variable, if set, overrides the `component` attribute in YAML stack configs"
   default     = false
 }
