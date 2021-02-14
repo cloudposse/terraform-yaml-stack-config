@@ -25,6 +25,16 @@ components:
               - 3a
               - 3b
               - 3c
+      settings:
+        spacelift:
+          workspace_enabled: true
+          autodeploy: true
+          branch: "test"
+          triggers: ["1", "2"]
+      env:
+        ENV_TEST_1: test1_override
+        ENV_TEST_2: test2_override
+        ENV_TEST_4: test4
 
     vpc:
       vars:
@@ -36,6 +46,9 @@ components:
             - 1
             - 2
             - 3
+      env:
+        ENV_TEST_3: test3
+
     eks:
       vars: {}
 
