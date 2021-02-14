@@ -7,13 +7,25 @@
 | external | >= 2.0 |
 | local | >= 1.3 |
 | template | >= 2.2 |
-| utils | >= 0.2.1 |
+| utils | >= 0.3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| utils | >= 0.2.1 |
+| utils | >= 0.3.0 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| this | cloudposse/label/null | 0.24.1 |
+
+## Resources
+
+| Name |
+|------|
+| [utils_stack_config_yaml](https://registry.terraform.io/providers/cloudposse/utils/0.3.0/docs/data-sources/stack_config_yaml) |
 
 ## Inputs
 
@@ -42,5 +54,4 @@
 | Name | Description |
 |------|-------------|
 | config | Stack configurations |
-
 <!-- markdownlint-restore -->
