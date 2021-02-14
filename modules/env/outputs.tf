@@ -1,6 +1,6 @@
-output "vars" {
-  value       = local.vars
-  description = "Vars configuration for the component"
+output "env" {
+  value       = local.env
+  description = "ENV variables for the component"
 }
 
 output "base_component" {
