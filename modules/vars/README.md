@@ -5,7 +5,7 @@ Terraform module that accepts stack configuration and returns deep-merged variab
 ## Usage
 
 The following example loads the stack config `my-stack` (which in turn imports other YAML config dependencies)
-and returns variables and backend config for stack `my-stack` and Terraform component `my-vpc`.
+and returns variables and backend config for Terraform component `my-vpc`.
 
   ```hcl
     module "vars" {

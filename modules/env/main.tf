@@ -8,7 +8,6 @@ data "utils_stack_config_yaml" "config" {
 
 locals {
   config         = yamldecode(data.utils_stack_config_yaml.config.output[0])
-  backend_type   = local.config["components"][var.component_type][var.component]["backend_type"]
-  backend        = local.config["components"][var.component_type][var.component]["backend"]
+  env            = local.config["components"][var.component_type][var.component]["env"]
   base_component = try(local.config["components"][var.component_type][var.component]["component"], "")
 }

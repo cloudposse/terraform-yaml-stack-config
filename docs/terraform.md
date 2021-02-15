@@ -7,13 +7,13 @@
 | external | >= 2.0 |
 | local | >= 1.3 |
 | template | >= 2.2 |
-| utils | >= 0.2.1 |
+| utils | >= 0.3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| utils | >= 0.2.1 |
+| utils | >= 0.3.0 |
 
 ## Modules
 
@@ -25,7 +25,7 @@
 
 | Name |
 |------|
-| [utils_stack_config_yaml](https://registry.terraform.io/providers/cloudposse/utils/0.2.1/docs/data-sources/stack_config_yaml) |
+| [utils_stack_config_yaml](https://registry.terraform.io/providers/cloudposse/utils/0.3.0/docs/data-sources/stack_config_yaml) |
 
 ## Inputs
 

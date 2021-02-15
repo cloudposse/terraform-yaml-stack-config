@@ -8,6 +8,14 @@ terraform:
   vars:
     var_1: 1
     var_3: 3
+  settings:
+    version: 1
+    spacelift:
+      workspace_enabled: false
+      autodeploy: false
+  env:
+    ENV_TEST_1: test1
+    ENV_TEST_2: test2
 
 helmfile:
   vars: {}

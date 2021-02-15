@@ -99,14 +99,16 @@ description: |-
   Terraform module that loads and processes an opinionated ["stack" configuration](#examples) from YAML sources
   using the [`terraform-provider-utils`](https://github.com/cloudposse/terraform-provider-utils) Terraform provider.
 
-  It supports deep-merged variables, backend config, and remote state outputs for Terraform and helmfile components.
+  It supports deep-merged variables, settings, ENV variables, backend config, and remote state outputs for Terraform and helmfile components.
 
 # Introduction to the project
 introduction: |-
 
-  The module is composed of three sub-modules:
+  The module is composed of the following sub-modules:
 
     - [vars](modules/vars) - accepts stack configuration and returns deep-merged variables for a Terraform or helmfile component.
+    - [settings](modules/settings) - accepts stack configuration and returns deep-merged settings for a Terraform or helmfile component.
+    - [env](modules/env) - accepts stack configuration and returns deep-merged ENV variables for a Terraform or helmfile component.
     - [backend](modules/backend) - accepts stack configuration and returns backend config for a Terraform component.
     - [remote-state](modules/remote-state) - accepts stack configuration and returns remote state outputs for a Terraform component.
       The module supports `s3` and `remote` (Terraform Cloud) backends.
@@ -121,7 +123,7 @@ usage: |-
   For an example on how to configure remote state for Terraform components in YAML config files and then read the components outputs from the remote state,
   see [examples/remote-state](examples/remote-state).
 
-  For an example on how to process `vars` and `backend` configurations for all Terraform and helmfile components for a list of stacks,
+  For an example on how to process `vars`, `settings`, `env` and `backend` configurations for all Terraform and helmfile components for a list of stacks,
   see [examples/stacks](examples/stacks).
 
 
@@ -189,60 +191,107 @@ examples: |-
 
       context = module.this.context
     }
+
+    module "settings" {
+      source = "cloudposse/stack-config/yaml//modules/settings"
+      # version     = "x.x.x"
+
+      stack_config_local_path = "./stacks"
+      stack                   = "my-stack"
+      component_type          = "terraform"
+      component               = "my-vpc"
+
+      context = module.this.context
+    }
+
+    module "env" {
+      source = "cloudposse/stack-config/yaml//modules/env"
+      # version     = "x.x.x"
+
+      stack_config_local_path = "./stacks"
+      stack                   = "my-stack"
+      component_type          = "terraform"
+      component               = "my-vpc"
+
+      context = module.this.context
+    }
+
   ```
 
-  The example returns the following `vars` and `backend` configurations for the `my-vpc` Terraform component:
+  The example returns the following deep-merged `vars`, `settings`, `env`, and `backend` configurations for the `my-vpc` Terraform component:
 
   ```hcl
-    vars = {
-      "availability_zones" = [
-        "us-east-2a",
-        "us-east-2b",
-        "us-east-2c",
+  backend = {
+    "acl" = "bucket-owner-full-control"
+    "bucket" = "eg-ue2-root-tfstate"
+    "dynamodb_table" = "eg-ue2-root-tfstate-lock"
+    "encrypt" = true
+    "key" = "terraform.tfstate"
+    "region" = "us-east-2"
+    "role_arn" = "arn:aws:iam::xxxxxxxxxxxx:role/eg-gbl-root-terraform"
+    "workspace_key_prefix" = "vpc"
+  }
+
+  backend_type = "s3"
+  base_component = "vpc"
+
+  env = {
+    "ENV_TEST_1" = "test1_override"
+    "ENV_TEST_2" = "test2_override"
+    "ENV_TEST_3" = "test3"
+    "ENV_TEST_4" = "test4"
+  }
+
+  settings = {
+    "spacelift" = {
+      "autodeploy" = true
+      "branch" = "test"
+      "triggers" = [
+        "1",
+        "2",
       ]
-      "cidr_block" = "10.132.0.0/18"
-      "environment" = "ue2"
-      "level" = 3
-      "namespace" = "eg"
-      "param" = "param4"
-      "region" = "us-east-2"
-      "stage" = "prod"
-      "subnet_type_tag_key" = "example/subnet/type"
-      "test_map" = {
-        "a" = "a_override_2"
-        "b" = "b_override"
-        "c" = [
-          1,
-          2,
-          3,
+      "workspace_enabled" = true
+    }
+    "version" = 1
+  }
+
+  vars = {
+    "availability_zones" = [
+      "us-east-2a",
+      "us-east-2b",
+      "us-east-2c",
+    ]
+    "cidr_block" = "10.132.0.0/18"
+    "environment" = "ue2"
+    "level" = 3
+    "namespace" = "eg"
+    "param" = "param4"
+    "region" = "us-east-2"
+    "stage" = "prod"
+    "subnet_type_tag_key" = "example/subnet/type"
+    "test_map" = {
+      "a" = "a_override_2"
+      "b" = "b_override"
+      "c" = [
+        1,
+        2,
+        3,
+      ]
+      "map2" = {
+        "atr1" = 1
+        "atr2" = 2
+        "atr3" = [
+          "3a",
+          "3b",
+          "3c",
         ]
-        "map2" = {
-          "atr1" = 1
-          "atr2" = 2
-          "atr3" = [
-            "3a",
-            "3b",
-            "3c",
-          ]
-        }
       }
-      "var_1" = "1_override"
-      "var_2" = "2_override"
-      "var_3" = "3a"
     }
+    "var_1" = "1_override"
+    "var_2" = "2_override"
+    "var_3" = "3a"
+  }
 
-    backend_type = s3
-
-    backend = {
-      "acl" = "bucket-owner-full-control"
-      "bucket" = "eg-ue2-root-tfstate"
-      "dynamodb_table" = "eg-ue2-root-tfstate-lock"
-      "encrypt" = true
-      "key" = "terraform.tfstate"
-      "region" = "us-east-2"
-      "role_arn" = "arn:aws:iam::xxxxxxxxxxxx:role/eg-gbl-root-terraform"
-      "workspace_key_prefix" = "vpc"
-    }
   ```
 
   See [examples/complete](examples/complete) for more details.
@@ -257,7 +306,7 @@ examples: |-
 
   ```hcl
     module "remote_state_my_vpc" {
-      source = "cloudposse/stack-config/yaml"
+      source = "cloudposse/stack-config/yaml//modules/remote-state"
       # Cloud Posse recommends pinning every module to a specific version
       # version     = "x.x.x"
 
@@ -267,7 +316,7 @@ examples: |-
     }
 
     module "remote_state_eks" {
-      source = "cloudposse/stack-config/yaml"
+      source = "cloudposse/stack-config/yaml//modules/remote-state"
       # Cloud Posse recommends pinning every module to a specific version
       # version     = "x.x.x"
 
