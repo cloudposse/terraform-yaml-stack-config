@@ -7,6 +7,7 @@ data "utils_stack_config_yaml" "config" {
 }
 
 locals {
-  env            = yamldecode(data.utils_stack_config_yaml.config.output[0])["components"][var.component_type][var.component]["env"]
-  base_component = try(yamldecode(data.utils_stack_config_yaml.config.output[0])["components"][var.component_type][var.component]["component"], "")
+  config         = yamldecode(data.utils_stack_config_yaml.config.output[0])
+  env            = local.config["components"][var.component_type][var.component]["env"]
+  base_component = try(local.config["components"][var.component_type][var.component]["component"], "")
 }
