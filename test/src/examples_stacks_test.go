@@ -30,10 +30,10 @@ func TestExamplesStacks(t *testing.T) {
 	assert.Greater(t, len(config), 4)
 
 	uatConfig := config[3]
-	uatComponents := uatConfig["components"].(map[interface{}]interface{})
-	uatTerraformComponents := uatComponents["terraform"].(map[interface{}]interface{})
-	auroraPostgresComponent := uatTerraformComponents["aurora-postgres"].(map[interface{}]interface{})
-	auroraPostgres2Component := uatTerraformComponents["aurora-postgres-2"].(map[interface{}]interface{})
+	uatComponents := uatConfig["components"].(map[string]interface{})
+	uatTerraformComponents := uatComponents["terraform"].(map[string]interface{})
+	auroraPostgresComponent := uatTerraformComponents["aurora-postgres"].(map[string]interface{})
+	auroraPostgres2Component := uatTerraformComponents["aurora-postgres-2"].(map[string]interface{})
 	auroraPostgresWorkspace := auroraPostgresComponent["workspace"]
 	auroraPostgres2Workspace := auroraPostgres2Component["workspace"]
 	assert.Equal(t, "uw2-uat", auroraPostgresWorkspace)
