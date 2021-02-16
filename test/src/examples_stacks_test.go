@@ -25,11 +25,13 @@ func TestExamplesStacks(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the value of an output variable
-	config := terraform.OutputListOfObjects(t, terraformOptions, "config")
-	// Verify we're getting back the outputs we expect
-	assert.Greater(t, len(config), 4)
+	var output interface{}
+	terraform.OutputStruct(t, terraformOptions, "config", &output)
+	config := output.([]interface{})
 
-	uatConfig := config[3]
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, len(config), 4)
+	uatConfig := config[3].(map[string]interface{})
 	uatComponents := uatConfig["components"].(map[string]interface{})
 	uatTerraformComponents := uatComponents["terraform"].(map[string]interface{})
 	auroraPostgresComponent := uatTerraformComponents["aurora-postgres"].(map[string]interface{})
