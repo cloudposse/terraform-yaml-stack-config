@@ -123,6 +123,7 @@ The module returns `vars` and `backend` configurations for all Terraform and hel
                 "region" = "us-west-2"
                 "stage" = "dev"
               }
+              "workspace" = "uw2-dev"
             }
             "aurora-postgres" = {
               "backend" = {
@@ -160,6 +161,7 @@ The module returns `vars` and `backend` configurations for all Terraform and hel
                 "region" = "us-west-2"
                 "stage" = "dev"
               }
+              "workspace" = "uw2-dev"
             }
             "aurora-postgres-2" = {
               "backend" = {
@@ -201,6 +203,7 @@ The module returns `vars` and `backend` configurations for all Terraform and hel
                 "region" = "us-west-2"
                 "stage" = "dev"
               }
+              "workspace" = "uw2-dev-aurora-postgres-2"
             }
             "vpc" = {
               "backend" = {
@@ -245,6 +248,7 @@ The module returns `vars` and `backend` configurations for all Terraform and hel
                 "vpc_flow_logs_enabled" = true
                 "vpc_flow_logs_traffic_type" = "ALL"
               }
+              "workspace" = "uw2-dev"
             }
             "eks" = {
               "backend" = {
@@ -299,6 +303,7 @@ The module returns `vars` and `backend` configurations for all Terraform and hel
                 }
                 "stage" = "dev"
               }
+              "workspace" = "uw2-dev"
             }
           }
         }

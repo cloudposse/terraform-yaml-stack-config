@@ -1,9 +1,5 @@
 locals {
-  remote_workspace_from_stack = format("%s-%s", local.stack, var.component)
-
-  remote_workspace = var.workspace != null ? var.workspace : (
-    try(local.backend.workspace, null) != null ? local.backend.workspace : local.remote_workspace_from_stack
-  )
+  remote_workspace = var.workspace != null ? var.workspace : format("%s-%s", local.stack, var.component)
 }
 
 data "terraform_remote_state" "remote" {

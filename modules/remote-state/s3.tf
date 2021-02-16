@@ -3,9 +3,7 @@ locals {
 
   s3_workspace_from_stack = local.include_component_in_workspace_name ? format("%s-%s", local.stack, var.component) : local.stack
 
-  s3_workspace = var.workspace != null ? var.workspace : (
-    try(local.backend.workspace, null) != null ? local.backend.workspace : local.s3_workspace_from_stack
-  )
+  s3_workspace = var.workspace != null ? var.workspace : local.s3_workspace_from_stack
 }
 
 data "terraform_remote_state" "s3" {
