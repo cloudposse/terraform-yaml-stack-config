@@ -30,7 +30,7 @@ func TestExamplesStacks(t *testing.T) {
 	config := output.([]interface{})
 
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, len(config), 4)
+	assert.Equal(t, 4, len(config))
 	uatConfig := config[3].(map[string]interface{})
 	uatComponents := uatConfig["components"].(map[string]interface{})
 	uatTerraformComponents := uatComponents["terraform"].(map[string]interface{})

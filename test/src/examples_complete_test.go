@@ -32,7 +32,7 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	backendType := terraform.Output(t, terraformOptions, "backend_type")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, backendType, "s3")
+	assert.Equal(t, "s3", backendType)
 
 	// Run `terraform output` to get the value of an output variable
 	backend := terraform.OutputMap(t, terraformOptions, "backend")
