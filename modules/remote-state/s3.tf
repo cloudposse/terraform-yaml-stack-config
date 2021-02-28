@@ -7,7 +7,7 @@ locals {
 }
 
 data "terraform_remote_state" "s3" {
-  count = local.backend_type == "s3" ? 1 : 0
+  count = local.enabled && local.backend_type == "s3" ? 1 : 0
 
   backend = "s3"
 

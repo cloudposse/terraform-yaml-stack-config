@@ -10,6 +10,8 @@ module "backend_config" {
 }
 
 locals {
+  enabled = module.this.enabled
+
   stack = var.stack != null ? var.stack : format("%s-%s", module.this.environment, module.this.stage)
 
   backend_type   = module.backend_config.backend_type
@@ -21,5 +23,5 @@ locals {
     remote = data.terraform_remote_state.remote
   }
 
-  outputs = local.remote_states[local.backend_type][0].outputs
+  outputs = try(local.remote_states[local.backend_type][0].outputs, {})
 }
