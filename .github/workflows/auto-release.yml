@@ -3,13 +3,13 @@ name: auto-release
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      # Get PR from merged commit to master
+      # Get PR from merged commit to main
       - uses: actions-ecosystem/action-get-merged-pull-request@v1
         id: get-merged-pull-request
         with:
