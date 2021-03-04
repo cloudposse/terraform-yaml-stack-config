@@ -1,6 +1,12 @@
 module "backend_config" {
   source = "../backend"
 
+  # Always enable the `backend` module even if `module.this.context` sets `enabled=false`,
+  # because we always need to read the remote state (it needs `environment` and `stage` from the context)
+  # even if a top-level calling module is disabled
+  # (if we want to set `enabled=false` on the top-level modules and then use `terraform apply` to destroy it)
+  enabled = true
+
   stack_config_local_path = var.stack_config_local_path
   stack                   = var.stack
   component               = var.component
@@ -10,8 +16,6 @@ module "backend_config" {
 }
 
 locals {
-  enabled = module.this.enabled
-
   stack = var.stack != null ? var.stack : format("%s-%s", module.this.environment, module.this.stage)
 
   backend_type   = module.backend_config.backend_type
@@ -23,5 +27,5 @@ locals {
     remote = data.terraform_remote_state.remote
   }
 
-  outputs = try(local.remote_states[local.backend_type][0].outputs, {})
+  outputs = local.remote_states[local.backend_type][0].outputs
 }
