@@ -19,7 +19,8 @@ data "terraform_remote_state" "s3" {
     key                  = local.backend.key
     dynamodb_table       = local.backend.dynamodb_table
     region               = local.backend.region
-    role_arn             = var.privileged ? null : local.backend.role_arn
+    role_arn             = var.privileged || ! contains(keys(local.backend), "role_arn") ? null : local.backend.role_arn
+    profile              = var.privileged || ! contains(keys(local.backend), "profile") ? null : local.backend.profile
     workspace_key_prefix = var.component
   }
 
