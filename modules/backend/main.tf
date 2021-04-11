@@ -8,7 +8,9 @@ data "utils_stack_config_yaml" "config" {
 
 locals {
   config         = yamldecode(data.utils_stack_config_yaml.config.output[0])
-  backend_type   = local.config["components"][var.component_type][var.component]["backend_type"]
-  backend        = local.config["components"][var.component_type][var.component]["backend"]
   base_component = try(local.config["components"][var.component_type][var.component]["component"], "")
+
+  final_component = coalesce(local.base_component, var.component)
+  backend_type    = local.config["components"][var.component_type][local.final_component]["backend_type"]
+  backend         = local.config["components"][var.component_type][local.final_component]["backend"]
 }
