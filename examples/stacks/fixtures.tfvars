@@ -8,3 +8,5 @@ stacks = [
   "uw2-staging",
   "uw2-uat"
 ]
+
+process_component_stack_deps = true
