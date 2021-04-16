@@ -3,7 +3,7 @@ locals {
 }
 
 data "terraform_remote_state" "remote" {
-  count = local.backend_type == "remote" ? 1 : 0
+  count = local.remote_state_enabled && local.backend_type == "remote" ? 1 : 0
 
   backend = "remote"
 

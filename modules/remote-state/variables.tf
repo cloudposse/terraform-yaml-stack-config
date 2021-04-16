@@ -39,6 +39,12 @@ variable "workspace" {
   default     = null
 }
 
+variable "bypass" {
+  type        = bool
+  description = "Set to true to skip looking up the remote state and just return the defaults."
+  default     = false
+}
+
 variable "include_component_in_workspace_name" {
   type        = bool
   description = "Whether to include the component name in the workspace name. This variable, if set, overrides the `component` attribute in YAML stack configs"
