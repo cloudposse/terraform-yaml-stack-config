@@ -34,7 +34,8 @@ locals {
   remote_states = {
     s3     = data.terraform_remote_state.s3
     remote = data.terraform_remote_state.remote
+    bypass = [{ outputs = var.defaults }]
   }
 
-  outputs = var.bypass ? var.defaults : local.remote_states[local.backend_type][0].outputs
+  outputs = local.remote_states[var.bypass ? "bypass" : local.backend_type][0].outputs
 }
