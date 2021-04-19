@@ -1,3 +1,4 @@
+
 <!-- markdownlint-disable -->
 # terraform-yaml-stack-config [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-yaml-stack-config.svg)](https://github.com/cloudposse/terraform-yaml-stack-config/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 <!-- markdownlint-restore -->
@@ -32,7 +33,6 @@ using the [`terraform-provider-utils`](https://github.com/cloudposse/terraform-p
 
 It supports deep-merged variables, settings, ENV variables, backend config, and remote state outputs for Terraform and helmfile components.
 
-
 ---
 
 This project is part of our comprehensive ["SweetOps"](https://cpco.io/sweetops) approach towards DevOps.
@@ -62,7 +62,6 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 
 
-
 ## Introduction
 
 
@@ -74,6 +73,7 @@ The module is composed of the following sub-modules:
   - [backend](modules/backend) - accepts stack configuration and returns backend config for a Terraform component.
   - [remote-state](modules/remote-state) - accepts stack configuration and returns remote state outputs for a Terraform component.
     The module supports `s3` and `remote` (Terraform Cloud) backends.
+
 
 ## Security & Compliance [<img src="https://cloudposse.com/wp-content/uploads/2020/11/bridgecrew.svg" width="250" align="right" />](https://bridgecrew.io/)
 
