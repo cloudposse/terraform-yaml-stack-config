@@ -8,9 +8,9 @@ locals {
 
   config = [
     for stack in local.decoded : {
+      imports = stack.imports,
       components = {
         helmfile = stack.components.helmfile,
-        imports  = stack.imports,
         terraform = {
           for k, v in stack.components.terraform : k => {
             backend      = v.backend
