@@ -10,3 +10,5 @@ stacks = [
 ]
 
 process_component_stack_deps = true
+
+process_component_deps = true

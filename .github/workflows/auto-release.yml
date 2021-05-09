@@ -11,7 +11,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      # Get PR from merged commit to main
+      # Get PR from merged commit to master
       - uses: actions-ecosystem/action-get-merged-pull-request@v1
         id: get-merged-pull-request
         with:

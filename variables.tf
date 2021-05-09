@@ -13,3 +13,9 @@ variable "process_component_stack_deps" {
   description = "Boolean flag to enable/disable processing all stack dependencies for the components in the provided stack"
   default     = false
 }
+
+variable "process_component_deps" {
+  type        = bool
+  description = "Boolean flag to enable/disable processing stack config dependencies for the components in the provided stack"
+  default     = true
+}
