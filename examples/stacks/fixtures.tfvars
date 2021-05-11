@@ -9,6 +9,6 @@ stacks = [
   "uw2-uat"
 ]
 
-process_component_stack_deps = true
+component_stack_deps_processing_enabled = true
 
-process_component_deps = true
+component_deps_processing_enabled = true

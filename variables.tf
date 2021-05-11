@@ -8,14 +8,14 @@ variable "stacks" {
   description = "A list of stack names"
 }
 
-variable "process_component_stack_deps" {
+variable "component_stack_deps_processing_enabled" {
   type        = bool
   description = "Boolean flag to enable/disable processing all stack dependencies for the components in the provided stack"
   default     = false
 }
 
-variable "process_component_deps" {
+variable "component_deps_processing_enabled" {
   type        = bool
   description = "Boolean flag to enable/disable processing stack config dependencies for the components in the provided stack"
-  default     = true
+  default     = false
 }
