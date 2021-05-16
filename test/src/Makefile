@@ -18,6 +18,7 @@ test: init
 	go mod download
 	go test -v -timeout 5m -run TestExamplesComplete
 	go test -v -timeout 5m -run TestExamplesStacks
+	go test -v -timeout 5m -run TestExamplesSpacelift
 
 ## Run tests in docker container
 docker/test:
@@ -29,3 +30,5 @@ docker/test:
 ## Clean up files
 clean:
 	rm -rf ../../examples/complete/*.tfstate*
+	rm -rf ../../examples/stacks/*.tfstate*
+	rm -rf ../../examples/spacelift/*.tfstate*

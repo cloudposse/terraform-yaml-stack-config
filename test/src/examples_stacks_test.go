@@ -31,6 +31,7 @@ func TestExamplesStacks(t *testing.T) {
 
 	// Verify we're getting back the outputs we expect
 	assert.Equal(t, 4, len(config))
+
 	uatConfig := config[3].(map[string]interface{})
 	uatComponents := uatConfig["components"].(map[string]interface{})
 	uatTerraformComponents := uatComponents["terraform"].(map[string]interface{})
@@ -38,6 +39,7 @@ func TestExamplesStacks(t *testing.T) {
 	auroraPostgres2Component := uatTerraformComponents["aurora-postgres-2"].(map[string]interface{})
 	auroraPostgresWorkspace := auroraPostgresComponent["workspace"]
 	auroraPostgres2Workspace := auroraPostgres2Component["workspace"]
+
 	assert.Equal(t, "uw2-uat", auroraPostgresWorkspace)
 	assert.Equal(t, "uw2-uat-aurora-postgres-2", auroraPostgres2Workspace)
 }
