@@ -54,6 +54,7 @@ categories:
   - backend
   - s3
   - backend-s3
+  - spacelift
 
 # List any related terraform modules that this module may be used with or that this module depends on.
 related:
@@ -99,7 +100,7 @@ description: |-
   Terraform module that loads and processes an opinionated ["stack" configuration](#examples) from YAML sources
   using the [`terraform-provider-utils`](https://github.com/cloudposse/terraform-provider-utils) Terraform provider.
 
-  It supports deep-merged variables, settings, ENV variables, backend config, and remote state outputs for Terraform and helmfile components.
+  It supports deep-merged variables, settings, ENV variables, backend config, remote state, and [Spacelift](https://spacelift.io/) stacks config outputs for Terraform and helmfile components.
 
 # Introduction to the project
 introduction: |-
@@ -112,6 +113,7 @@ introduction: |-
     - [backend](modules/backend) - accepts stack configuration and returns backend config for a Terraform component.
     - [remote-state](modules/remote-state) - accepts stack configuration and returns remote state outputs for a Terraform component.
       The module supports `s3` and `remote` (Terraform Cloud) backends.
+    - [spacelift](modules/spacelift) - accepts infrastructure stack configuration and transforms it into Spacelift stacks.
 
 # How to use this module. Should be an easy example to copy and paste.
 usage: |-
