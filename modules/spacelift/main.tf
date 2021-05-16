@@ -6,5 +6,5 @@ data "utils_spacelift_stack_config" "example" {
 }
 
 locals {
-  spacelift_stacks = yamldecode(data.utils_stack_config_yaml.config.output)
+  spacelift_stacks = yamldecode(data.utils_spacelift_stack_config.example.output)
 }

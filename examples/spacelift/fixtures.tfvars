@@ -1,6 +1,6 @@
 enabled = true
 
-stack_config_local_path = "./stacks"
+stack_config_path_template = "stacks/%s.yaml"
 
 stacks = [
   "uw2-dev",
@@ -9,6 +9,6 @@ stacks = [
   "uw2-uat"
 ]
 
-stack_deps_processing_enabled = true
+stack_deps_processing_enabled = false
 
 component_deps_processing_enabled = true
