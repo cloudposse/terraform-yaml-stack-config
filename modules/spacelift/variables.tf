@@ -15,6 +15,12 @@ variable "component_deps_processing_enabled" {
   default     = true
 }
 
+variable "imports_processing_enabled" {
+  type        = bool
+  description = "Enable/disable processing stack imports"
+  default     = false
+}
+
 variable "stack_config_path_template" {
   type        = string
   description = "Stack config path template"

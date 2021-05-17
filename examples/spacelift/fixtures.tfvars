@@ -12,3 +12,5 @@ stacks = [
 stack_deps_processing_enabled = false
 
 component_deps_processing_enabled = true
+
+imports_processing_enabled = true
