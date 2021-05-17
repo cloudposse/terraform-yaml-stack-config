@@ -1,6 +1,7 @@
 data "utils_stack_config_yaml" "config" {
-  input              = [for stack in var.stacks : format("%s/%s.yaml", var.stack_config_local_path, stack)]
-  process_stack_deps = var.process_component_stack_deps
+  input                  = [for stack in var.stacks : format("%s/%s.yaml", var.stack_config_local_path, stack)]
+  process_stack_deps     = var.stack_deps_processing_enabled
+  process_component_deps = var.component_deps_processing_enabled
 }
 
 locals {
@@ -19,6 +20,7 @@ locals {
             settings     = v.settings
             vars         = v.vars
             stacks       = v.stacks
+            deps         = v.deps
             component    = try(v.component, null)
             workspace = try(v.backend_type, "") == "remote" ? format("%s-%s", format("%s-%s", try(v.vars.environment, ""), try(v.vars.stage, "")), k) : (
               try(v.component, null) != null ? format("%s-%s-%s", try(v.vars.environment, ""), try(v.vars.stage, ""), k) : (

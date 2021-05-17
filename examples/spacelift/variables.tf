@@ -1,11 +1,6 @@
-variable "stack_config_local_path" {
-  type        = string
-  description = "Path to local stack configs"
-}
-
 variable "stacks" {
   type        = list(string)
-  description = "A list of stack names"
+  description = "A list of infrastructure stack names"
 }
 
 variable "stack_deps_processing_enabled" {
@@ -17,5 +12,17 @@ variable "stack_deps_processing_enabled" {
 variable "component_deps_processing_enabled" {
   type        = bool
   description = "Boolean flag to enable/disable processing stack config dependencies for the components in the provided stack"
+  default     = true
+}
+
+variable "imports_processing_enabled" {
+  type        = bool
+  description = "Enable/disable processing stack imports"
   default     = false
+}
+
+variable "stack_config_path_template" {
+  type        = string
+  description = "Stack config path template"
+  default     = "stacks/%s.yaml"
 }

@@ -31,7 +31,7 @@
 Terraform module that loads and processes an opinionated ["stack" configuration](#examples) from YAML sources
 using the [`terraform-provider-utils`](https://github.com/cloudposse/terraform-provider-utils) Terraform provider.
 
-It supports deep-merged variables, settings, ENV variables, backend config, and remote state outputs for Terraform and helmfile components.
+It supports deep-merged variables, settings, ENV variables, backend config, remote state, and [Spacelift](https://spacelift.io/) stacks config outputs for Terraform and helmfile components.
 
 ---
 
@@ -73,6 +73,7 @@ The module is composed of the following sub-modules:
   - [backend](modules/backend) - accepts stack configuration and returns backend config for a Terraform component.
   - [remote-state](modules/remote-state) - accepts stack configuration and returns remote state outputs for a Terraform component.
     The module supports `s3` and `remote` (Terraform Cloud) backends.
+  - [spacelift](modules/spacelift) - accepts infrastructure stack configuration and transforms it into Spacelift stacks.
 
 
 ## Security & Compliance [<img src="https://cloudposse.com/wp-content/uploads/2020/11/bridgecrew.svg" width="250" align="right" />](https://bridgecrew.io/)
@@ -346,13 +347,13 @@ Available targets:
 | <a name="requirement_external"></a> [external](#requirement\_external) | >= 2.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 1.3 |
 | <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.2 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 0.4.3 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 0.8.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_utils"></a> [utils](#provider\_utils) | >= 0.4.3 |
+| <a name="provider_utils"></a> [utils](#provider\_utils) | >= 0.8.0 |
 
 ## Modules
 
@@ -372,6 +373,7 @@ Available targets:
 |------|-------------|------|---------|:--------:|
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional tags for appending to tags\_as\_list\_of\_maps. Not added to `tags`. | `map(string)` | `{}` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
+| <a name="input_component_deps_processing_enabled"></a> [component\_deps\_processing\_enabled](#input\_component\_deps\_processing\_enabled) | Boolean flag to enable/disable processing stack config dependencies for the components in the provided stack | `bool` | `false` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
@@ -382,10 +384,10 @@ Available targets:
 | <a name="input_label_value_case"></a> [label\_value\_case](#input\_label\_value\_case) | The letter case of output label values (also used in `tags` and `id`).<br>Possible values: `lower`, `title`, `upper` and `none` (no transformation).<br>Default value: `lower`. | `string` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | Solution name, e.g. 'app' or 'jenkins' | `string` | `null` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `null` | no |
-| <a name="input_process_component_stack_deps"></a> [process\_component\_stack\_deps](#input\_process\_component\_stack\_deps) | Boolean flag to enable/disable processing all stack dependencies for the components in the provided stack | `bool` | `false` | no |
 | <a name="input_regex_replace_chars"></a> [regex\_replace\_chars](#input\_regex\_replace\_chars) | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | <a name="input_stack_config_local_path"></a> [stack\_config\_local\_path](#input\_stack\_config\_local\_path) | Path to local stack configs | `string` | n/a | yes |
-| <a name="input_stacks"></a> [stacks](#input\_stacks) | A list of stack names | `list(string)` | n/a | yes |
+| <a name="input_stack_deps_processing_enabled"></a> [stack\_deps\_processing\_enabled](#input\_stack\_deps\_processing\_enabled) | Boolean flag to enable/disable processing all stack dependencies in the provided stack | `bool` | `false` | no |
+| <a name="input_stacks"></a> [stacks](#input\_stacks) | A list of infrastructure stack names | `list(string)` | n/a | yes |
 | <a name="input_stage"></a> [stage](#input\_stage) | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 
@@ -405,6 +407,7 @@ Like this project? Please give it a ★ on [our GitHub](https://github.com/cloud
 Are you using this project or any of our other projects? Consider [leaving a testimonial][testimonial]. =)
 
 
+
 ## Related Projects
 
 Check out these related projects.
@@ -415,8 +418,6 @@ Check out these related projects.
 - [terraform-opsgenie-incident-management](https://github.com/cloudposse/terraform-opsgenie-incident-management) - Terraform module to provision Opsgenie resources from YAML configurations using the Opsgenie provider, complete with automated tests.
 - [terraform-aws-components](https://github.com/cloudposse/terraform-aws-components) - Catalog of reusable Terraform components and blueprints for provisioning reference architectures.
 - [reference-architectures](https://github.com/cloudposse/reference-architectures) - Get up and running quickly with one of our reference architecture using our fully automated cold-start process.
-
-
 
 
 ## References
