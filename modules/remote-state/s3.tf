@@ -57,7 +57,7 @@ data "terraform_remote_state" "s3" {
     # and after that the global `backend` config never changed.
     # We can make a component privileged or not any time by just updating its `privileged` attribute in the component's catalog file.
     # We can change a component's `backend` portion any time without touching/affection the backend configs of all other components (e.g. when we add a new
-    # component, we don't touch the `globals.yaml` file at all).
+    # component, we don't touch the `globals.yaml` file at all, and we don't update the component's `role_arn` and `profile` settings).
 
     # Use the role to access the remote state if the component is not privileged and `role_arn` is specified
     role_arn = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "role_arn") ? local.backend.role_arn : null
