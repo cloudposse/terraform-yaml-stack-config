@@ -60,6 +60,5 @@ func TestExamplesSpacelift(t *testing.T) {
 	assert.Equal(t, "deps:stacks/uw2-dev.yaml", uw2DevAuroraPostgres2StackLabels[4])
 	assert.Equal(t, "deps:stacks/uw2-globals.yaml", uw2DevAuroraPostgres2StackLabels[5])
 	assert.Equal(t, "folder:component/aurora-postgres-2", uw2DevAuroraPostgres2StackLabels[6])
-	assert.Equal(t, "folder:uw2", uw2DevAuroraPostgres2StackLabels[7])
-	assert.Equal(t, "folder:uw2/dev", uw2DevAuroraPostgres2StackLabels[8])
+	assert.Equal(t, "folder:uw2/dev", uw2DevAuroraPostgres2StackLabels[7])
 }

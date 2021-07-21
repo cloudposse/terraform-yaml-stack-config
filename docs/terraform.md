@@ -7,13 +7,13 @@
 | <a name="requirement_external"></a> [external](#requirement\_external) | >= 2.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 1.3 |
 | <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.2 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 0.8.0 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 0.11.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_utils"></a> [utils](#provider\_utils) | >= 0.8.0 |
+| <a name="provider_utils"></a> [utils](#provider\_utils) | >= 0.11.0 |
 
 ## Modules
 
