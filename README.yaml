@@ -91,9 +91,6 @@ references:
   - name: "Terraform `templatefile` Function"
     description: "`templatefile` reads the file at the given path and renders its content as a template using a supplied set of template variables."
     url: "https://www.terraform.io/docs/configuration/functions/templatefile.html"
-  - name: "Terraform `template_file` data source"
-    description: "The `template_file` data source renders a template from a template string, which is usually loaded from an external file."
-    url: "https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file"
 
 # Short description of this project
 description: |-
@@ -127,7 +124,6 @@ usage: |-
 
   For an example on how to process `vars`, `settings`, `env` and `backend` configurations for all Terraform and helmfile components for a list of stacks,
   see [examples/stacks](examples/stacks).
-
 
 # Example usage
 examples: |-
