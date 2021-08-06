@@ -37,5 +37,6 @@ locals {
     bypass = [{ outputs = var.defaults }]
   }
 
-  outputs = local.remote_states[var.bypass ? "bypass" : local.backend_type][0].outputs
+  remote_state_backend_key = var.bypass ? "bypass" : local.backend_type
+  outputs                  = try(length(local.remote_state_backend_key), 0) > 0 ? local.remote_states[local.remote_state_backend_key][0].outputs : {}
 }
