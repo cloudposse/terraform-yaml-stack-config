@@ -1,3 +1,4 @@
+
 <!-- markdownlint-disable -->
 # terraform-yaml-stack-config [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-yaml-stack-config.svg)](https://github.com/cloudposse/terraform-yaml-stack-config/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 <!-- markdownlint-restore -->
@@ -32,7 +33,6 @@ using the [`terraform-provider-utils`](https://github.com/cloudposse/terraform-p
 
 It supports deep-merged variables, settings, ENV variables, backend config, remote state, and [Spacelift](https://spacelift.io/) stacks config outputs for Terraform and helmfile components.
 
-
 ---
 
 This project is part of our comprehensive ["SweetOps"](https://cpco.io/sweetops) approach towards DevOps.
@@ -62,7 +62,6 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 
 
-
 ## Introduction
 
 
@@ -75,6 +74,7 @@ The module is composed of the following sub-modules:
   - [remote-state](modules/remote-state) - accepts stack configuration and returns remote state outputs for a Terraform component.
     The module supports `s3` and `remote` (Terraform Cloud) backends.
   - [spacelift](modules/spacelift) - accepts infrastructure stack configuration and transforms it into Spacelift stacks.
+
 
 ## Security & Compliance [<img src="https://cloudposse.com/wp-content/uploads/2020/11/bridgecrew.svg" width="250" align="right" />](https://bridgecrew.io/)
 
@@ -409,6 +409,7 @@ Like this project? Please give it a ★ on [our GitHub](https://github.com/cloud
 Are you using this project or any of our other projects? Consider [leaving a testimonial][testimonial]. =)
 
 
+
 ## Related Projects
 
 Check out these related projects.
@@ -419,8 +420,6 @@ Check out these related projects.
 - [terraform-opsgenie-incident-management](https://github.com/cloudposse/terraform-opsgenie-incident-management) - Terraform module to provision Opsgenie resources from YAML configurations using the Opsgenie provider, complete with automated tests.
 - [terraform-aws-components](https://github.com/cloudposse/terraform-aws-components) - Catalog of reusable Terraform components and blueprints for provisioning reference architectures.
 - [reference-architectures](https://github.com/cloudposse/reference-architectures) - Get up and running quickly with one of our reference architecture using our fully automated cold-start process.
-
-
 
 
 ## References
