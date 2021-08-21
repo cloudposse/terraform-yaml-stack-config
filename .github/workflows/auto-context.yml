@@ -1,8 +1,11 @@
 name: "auto-context"
 on:
-  schedule:
-  # Update context.tf nightly
-  - cron:  '0 3 * * *'
+  workflow_dispatch:
+
+  # Disable automated updates
+  #  schedule:
+  #  # Update context.tf nightly
+  #  - cron:  '0 3 * * *'
 
 jobs:
   update:
