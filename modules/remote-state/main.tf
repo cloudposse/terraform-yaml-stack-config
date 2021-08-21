@@ -22,8 +22,15 @@ module "backend_config" {
   context = module.always.context
 }
 
+module "stack" {
+  source = "../stack"
+
+  stack   = var.stack
+  context = module.always.context
+}
+
 locals {
-  stack = var.stack != null ? var.stack : format("%s-%s", module.always.environment, module.always.stage)
+  stack = module.stack.stack_name
 
   backend_type   = module.backend_config.backend_type
   backend        = module.backend_config.backend
