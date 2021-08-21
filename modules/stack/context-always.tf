@@ -11,6 +11,7 @@
 #   with the entire contents of the new context.tf
 # - Add "CUSTOMIZED!!! to the start of the  "ONLY EDIT THIS FILE" warning lines
 # - In module "this", replace `enabled = var.enabled` with `enabled = true`
+# - Rename module from "this" to "always"
 # - Delete the declaration of variable "enabled"
 #
 
@@ -38,7 +39,7 @@
 # will be null, and `module.this.delimiter` will be `-` (hyphen).
 #
 
-module "this" {
+module "always" {
   source  = "cloudposse/label/null"
   version = "0.25.0" # requires Terraform >= 0.13.0
 
