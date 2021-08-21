@@ -29,7 +29,7 @@ locals {
   backend        = module.backend_config.backend
   base_component = module.backend_config.base_component
 
-  remote_state_enabled = ! var.bypass
+  remote_state_enabled = !var.bypass
 
   remote_states = {
     s3     = data.terraform_remote_state.s3
