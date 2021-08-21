@@ -1,16 +1,3 @@
-module "always" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
-
-  # Always enable the `backend` module even if `module.this.context` sets `enabled=false`,
-  # because we always need to read the remote state (it needs `environment` and `stage` from the context)
-  # even if a top-level calling module is disabled
-  # (if we want to set `enabled=false` on the top-level modules and then use `terraform apply` to destroy it)
-  enabled = true
-
-  context = module.this.context
-}
-
 module "backend_config" {
   source = "../backend"
 

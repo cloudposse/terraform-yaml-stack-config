@@ -1,6 +1,28 @@
 #
-# ONLY EDIT THIS FILE IN github.com/cloudposse/terraform-null-label
-# All other instances of this file should be a copy of that one
+# This is a customized version of context.tf which ignores the "enabled"
+# flag and always outputs labels so that even disabled modules can
+# find their stack configurations, because disabled modules still need
+# their required variables to be set, and in practice, the stack name
+# is usually a required variable in one way or another.
+#
+# This file should be installed in both the stack and remote-state modules.
+# Modify once, deploy twice.
+#
+
+# To update this file to a new version of context.tf
+# - replace the contents below the blank line following the "CUT HERE" line
+#   with the entire contents of the new context.tf
+# - Add "CUSTOMIZED!!! to the start of the  "ONLY EDIT THIS FILE" warning lines
+# - In module "this", replace `enabled = var.enabled` with `enabled = true`
+# - Rename module from "this" to "always"
+# - Delete the declaration of variable "enabled"
+#
+
+############ CUT HERE ##########################
+
+#
+# CUSTOMIZED!!!  ~ONLY EDIT THIS FILE IN github.com/cloudposse/terraform-null-label~
+# CUSTOMIZED!!!  ~All other instances of this file should be a copy of that one~
 #
 #
 # Copy this file from https://github.com/cloudposse/terraform-null-label/blob/master/exports/context.tf
@@ -20,11 +42,11 @@
 # will be null, and `module.this.delimiter` will be `-` (hyphen).
 #
 
-module "this" {
+module "always" {
   source  = "cloudposse/label/null"
   version = "0.25.0" # requires Terraform >= 0.13.0
 
-  enabled             = var.enabled
+  enabled             = true
   namespace           = var.namespace
   tenant              = var.tenant
   environment         = var.environment
@@ -92,12 +114,6 @@ variable "context" {
     condition     = lookup(var.context, "label_value_case", null) == null ? true : contains(["lower", "title", "upper", "none"], var.context["label_value_case"])
     error_message = "Allowed values: `lower`, `title`, `upper`, `none`."
   }
-}
-
-variable "enabled" {
-  type        = bool
-  default     = null
-  description = "Set to false to prevent the module from creating any resources"
 }
 
 variable "namespace" {
