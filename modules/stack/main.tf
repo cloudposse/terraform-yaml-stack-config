@@ -1,15 +1,3 @@
-module "always" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
-
-  # Always enable the `stack` module even if `module.this.context` sets `enabled=false`,
-  # because we always need to be able to create stack names even if a top-level calling module is disabled
-  # (if we want to set `enabled=false` on the top-level modules and then use `terraform apply` to destroy it)
-  enabled = true
-
-  context = module.this.context
-}
-
 locals {
   descriptor_stack = lookup(module.always.descriptors, "stack", null)
 
