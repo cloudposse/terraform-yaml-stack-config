@@ -11,19 +11,8 @@ locals {
     for stack in local.decoded : {
       imports = stack.imports,
       components = {
-        helmfile = stack.components.helmfile,
-        terraform = {
-          for k, v in stack.components.terraform : k => {
-            backend      = v.backend
-            backend_type = v.backend_type
-            env          = v.env
-            settings     = v.settings
-            vars         = v.vars
-            stacks       = v.stacks
-            deps         = v.deps
-            component    = try(v.component, null)
-          }
-        }
+        helmfile  = stack.components.helmfile,
+        terraform = stack.components.terraform
       }
     }
   ]

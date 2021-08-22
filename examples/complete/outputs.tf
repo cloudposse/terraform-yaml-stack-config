@@ -20,7 +20,7 @@ output "base_component" {
 
 output "settings" {
   value       = module.settings.settings
-  description = "settings for the component"
+  description = "Settings for the component"
 }
 
 output "env" {

@@ -5,8 +5,7 @@
 # their required variables to be set, and in practice, the stack name
 # is usually a required variable in one way or another.
 #
-# This file should be installed in both the stack and remote-state modules.
-# Modify once, deploy twice.
+# This file should be installed in all sub-modules.
 #
 
 # To update this file to a new version of context.tf

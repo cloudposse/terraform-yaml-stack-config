@@ -2,7 +2,7 @@ module "stack" {
   source = "../stack"
 
   stack   = var.stack
-  context = module.this.context
+  context = module.always.context
 }
 
 data "utils_stack_config_yaml" "config" {
