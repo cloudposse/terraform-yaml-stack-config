@@ -42,3 +42,9 @@ module "env" {
   context = module.this.context
 }
 
+module "stack" {
+  source = "../../modules/stack"
+
+  stack   = var.stack
+  context = module.this.context
+}
