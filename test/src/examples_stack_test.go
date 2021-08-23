@@ -7,12 +7,12 @@ import (
 )
 
 // Test the Terraform module in examples/complete using Terratest.
-func TestExamplesComplete(t *testing.T) {
+func TestExamplesStack(t *testing.T) {
 	t.Parallel()
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../../examples/complete",
+		TerraformDir: "../../examples/stack",
 		Upgrade:      true,
 		// Variables to pass to our Terraform code using -var-file options
 		VarFiles: []string{"fixtures.tfvars"},
@@ -25,32 +25,47 @@ func TestExamplesComplete(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the value of an output variable
-	vars := terraform.OutputMap(t, terraformOptions, "vars")
+	stack1Name := terraform.Output(t, terraformOptions, "stack_1_name")
 	// Verify we're getting back the outputs we expect
-	assert.Greater(t, len(vars), 0)
+	assert.Equal(t, "my-stack", stack1Name)
 
 	// Run `terraform output` to get the value of an output variable
-	backendType := terraform.Output(t, terraformOptions, "backend_type")
+	stack2Name := terraform.Output(t, terraformOptions, "stack_2_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "s3", backendType)
+	assert.Equal(t, "my-stack", stack2Name)
 
 	// Run `terraform output` to get the value of an output variable
-	backend := terraform.OutputMap(t, terraformOptions, "backend")
+	stack3Name := terraform.Output(t, terraformOptions, "stack_3_name")
 	// Verify we're getting back the outputs we expect
-	assert.Greater(t, len(backend), 0)
+	assert.Equal(t, "uw2-dev", stack3Name)
 
 	// Run `terraform output` to get the value of an output variable
-	settings := terraform.OutputMap(t, terraformOptions, "settings")
+	stack4Name := terraform.Output(t, terraformOptions, "stack_4_name")
 	// Verify we're getting back the outputs we expect
-	assert.Greater(t, len(settings), 0)
+	assert.Equal(t, "acme-uw2-dev", stack4Name)
 
 	// Run `terraform output` to get the value of an output variable
-	env := terraform.OutputMap(t, terraformOptions, "env")
+	stack5Name := terraform.Output(t, terraformOptions, "stack_5_name")
 	// Verify we're getting back the outputs we expect
-	assert.Greater(t, len(env), 0)
+	assert.Equal(t, "acme-uw2-dev", stack5Name)
 
 	// Run `terraform output` to get the value of an output variable
-	stackName := terraform.Output(t, terraformOptions, "stack_name")
+	stack6Name := terraform.Output(t, terraformOptions, "stack_6_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "my-stack", stackName)
+	assert.Equal(t, "dev-uw2-acme", stack6Name)
+
+	// Run `terraform output` to get the value of an output variable
+	stack7Name := terraform.Output(t, terraformOptions, "stack_7_name")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "uw2-acme-dev", stack7Name)
+
+	// Run `terraform output` to get the value of an output variable
+	stack8Name := terraform.Output(t, terraformOptions, "stack_8_name")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "dev-acme-uw2", stack8Name)
+
+	// Run `terraform output` to get the value of an output variable
+	stack9Name := terraform.Output(t, terraformOptions, "stack_9_name")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "my-stack", stack9Name)
 }

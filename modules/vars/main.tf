@@ -1,9 +1,12 @@
-locals {
-  stack = var.stack != null ? var.stack : format("%s-%s", module.this.environment, module.this.stage)
+module "stack" {
+  source = "../stack"
+
+  stack   = var.stack
+  context = module.always.context
 }
 
 data "utils_stack_config_yaml" "config" {
-  input = [format("%s/%s.yaml", var.stack_config_local_path, local.stack)]
+  input = [format("%s/%s.yaml", var.stack_config_local_path, module.stack.stack_name)]
 }
 
 locals {

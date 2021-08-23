@@ -1,16 +1,3 @@
-module "always" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
-
-  # Always enable the `backend` module even if `module.this.context` sets `enabled=false`,
-  # because we always need to read the remote state (it needs `environment` and `stage` from the context)
-  # even if a top-level calling module is disabled
-  # (if we want to set `enabled=false` on the top-level modules and then use `terraform apply` to destroy it)
-  enabled = true
-
-  context = module.this.context
-}
-
 module "backend_config" {
   source = "../backend"
 
@@ -22,8 +9,15 @@ module "backend_config" {
   context = module.always.context
 }
 
+module "stack" {
+  source = "../stack"
+
+  stack   = var.stack
+  context = module.always.context
+}
+
 locals {
-  stack = var.stack != null ? var.stack : format("%s-%s", module.always.environment, module.always.stage)
+  stack = module.stack.stack_name
 
   backend_type   = module.backend_config.backend_type
   backend        = module.backend_config.backend
