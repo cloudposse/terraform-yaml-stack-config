@@ -1,3 +1,13 @@
+module "remote_state_account" {
+  source = "../../modules/remote-state"
+
+  stack_config_local_path = var.stack_config_local_path
+  stack                   = var.stack
+  component               = "account"
+
+  context = module.this.context
+}
+
 module "remote_state_my_vpc" {
   source = "../../modules/remote-state"
 

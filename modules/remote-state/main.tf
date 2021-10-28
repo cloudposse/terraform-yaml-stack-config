@@ -23,12 +23,13 @@ locals {
   backend        = module.backend_config.backend
   base_component = module.backend_config.base_component
 
-  remote_state_enabled = ! var.bypass
+  remote_state_enabled = !var.bypass
 
   remote_states = {
-    s3     = data.terraform_remote_state.s3
-    remote = data.terraform_remote_state.remote
     bypass = [{ outputs = var.defaults }]
+    local  = [{ outputs = try(local.backend, {}) }]
+    remote = data.terraform_remote_state.remote
+    s3     = data.terraform_remote_state.s3
   }
 
   remote_state_backend_key = var.bypass ? "bypass" : local.backend_type

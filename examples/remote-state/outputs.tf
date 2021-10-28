@@ -1,3 +1,8 @@
+output "account_outputs" {
+  value       = module.remote_state_account.outputs
+  description = "Remote state outputs of the `account` component"
+}
+
 output "my_vpc_outputs" {
   value       = module.remote_state_my_vpc.outputs
   description = "Remote state outputs of the `my-vpc` component"

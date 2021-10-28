@@ -12,6 +12,8 @@ helmfile:
 
 components:
   terraform:
+    account:
+      vars: {}
     my-vpc:
       component: vpc
       vars:
