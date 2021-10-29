@@ -1,24 +1,12 @@
-variable "stack_config_local_path" {
-  type        = string
-  description = "Path to local stack configs"
-}
-
 variable "stack" {
   type        = string
   description = "Stack name"
   default     = null
 }
 
-variable "component_type" {
-  type        = string
-  description = "Component type (terraform or helmfile)"
-  default     = "terraform"
-}
-
 variable "component" {
   type        = string
   description = "Component"
-  default     = null
 }
 
 variable "privileged" {
@@ -35,18 +23,12 @@ variable "defaults" {
 
 variable "workspace" {
   type        = string
-  description = "Workspace (this overrides the workspace calculated from `var.stack`, `var.environment` and `var.stage`)"
+  description = "Workspace (this overrides the workspace calculated from the context)"
   default     = null
 }
 
 variable "bypass" {
   type        = bool
-  description = "Set to true to skip looking up the remote state and just return the defaults."
-  default     = false
-}
-
-variable "include_component_in_workspace_name" {
-  type        = bool
-  description = "Whether to include the component name in the workspace name. This variable, if set, overrides the `component` attribute in YAML stack configs"
+  description = "Set to true to skip looking up the remote state and just return the defaults"
   default     = false
 }

@@ -1,6 +1,6 @@
 # remote-state
 
-Terraform module that accepts stack configuration and returns remote state outputs for a Terraform component.
+Terraform module that accepts a component and a stack name and returns remote state outputs for the component.
 
 The module supports `s3` and `remote` (Terraform Cloud) backends.
 
@@ -17,7 +17,6 @@ __NOTE:__ The backend type (`s3`) and backend configuration for the components a
       # Cloud Posse recommends pinning every module to a specific version
       # version     = "x.x.x"
     
-      stack_config_local_path = "./stacks"
       stack                   = "my-stack"
       component               = "my-vpc"
     }
@@ -27,7 +26,6 @@ __NOTE:__ The backend type (`s3`) and backend configuration for the components a
       # Cloud Posse recommends pinning every module to a specific version
       # version     = "x.x.x"
     
-      stack_config_local_path = "./stacks"
       stack                   = "my-stack"
       component               = "eks"
     }

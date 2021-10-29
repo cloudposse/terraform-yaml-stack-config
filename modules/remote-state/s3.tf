@@ -1,9 +1,5 @@
 locals {
-  include_component_in_workspace_name = var.include_component_in_workspace_name == true || local.base_component != ""
-
-  s3_workspace_from_stack = local.include_component_in_workspace_name ? format("%s-%s", local.stack, var.component) : local.stack
-
-  s3_workspace = var.workspace != null ? var.workspace : local.s3_workspace_from_stack
+  s3_workspace = var.workspace != null ? var.workspace : local.workspace
 }
 
 data "terraform_remote_state" "s3" {
@@ -60,12 +56,12 @@ data "terraform_remote_state" "s3" {
     # component, we don't touch the `globals.yaml` file at all, and we don't update the component's `role_arn` and `profile` settings).
 
     # Use the role to access the remote state if the component is not privileged and `role_arn` is specified
-    role_arn = ! coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "role_arn") ? local.backend.role_arn : null
+    role_arn = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "role_arn") ? local.backend.role_arn : null
 
     # Use the profile to access the remote state if the component is not privileged and `profile` is specified
-    profile = ! coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "profile") ? local.backend.profile : null
+    profile = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "profile") ? local.backend.profile : null
 
-    workspace_key_prefix = coalesce(local.base_component, var.component)
+    workspace_key_prefix = local.workspace_key_prefix
   }
 
   defaults = var.defaults
