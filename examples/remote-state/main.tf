@@ -1,17 +1,8 @@
-module "remote_state_my_vpc" {
+module "remote_state" {
   source = "../../modules/remote-state"
 
-  stack     = var.stack
-  component = "my-vpc"
-
-  context = module.this.context
-}
-
-module "remote_state_eks" {
-  source = "../../modules/remote-state"
-
-  stack     = var.stack
-  component = "eks"
+  component = "test/test-component-override"
+  stack     = "tenant1-ue2-dev"
 
   context = module.this.context
 }

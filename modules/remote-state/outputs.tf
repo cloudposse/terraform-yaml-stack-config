@@ -20,5 +20,5 @@ output "remote_workspace_name" {
 
 output "outputs" {
   value       = local.outputs
-  description = "The outputs of the component"
+  description = "Remote state"
 }
