@@ -12,10 +12,8 @@ module "vars" {
 module "backend" {
   source = "../../modules/backend"
 
-  stack_config_local_path = var.stack_config_local_path
-  stack                   = var.stack
-  component_type          = var.component_type
-  component               = var.component
+  stack     = var.stack
+  component = var.component
 
   context = module.this.context
 }
