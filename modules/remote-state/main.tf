@@ -8,7 +8,7 @@ locals {
   backend_type         = local.config.backend_type
   backend              = local.config.backend
   workspace            = local.config.workspace
-  workspace_key_prefix = local.backend.workspace_key_prefix
+  workspace_key_prefix = lookup(local.backend, "workspace_key_prefix", null)
 
   remote_state_enabled = !var.bypass
 

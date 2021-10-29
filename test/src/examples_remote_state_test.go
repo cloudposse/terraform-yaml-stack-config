@@ -30,5 +30,10 @@ func TestExamplesRemoteState(t *testing.T) {
 	remoteState := output.(map[string]interface{})
 
 	// Verify we're getting back the outputs we expect
-	assert.NotNilf(t, remoteState, "remote state is nil")
+	assert.NotNilf(t, remoteState, "remote state is empty")
+	assert.Equal(t, float64(1), remoteState["val1"])
+	assert.Equal(t, "2", remoteState["val2"])
+	assert.Equal(t, true, remoteState["val3"])
+	assert.Equal(t, "", remoteState["val4"])
+	assert.Equal(t, nil, remoteState["val5"])
 }
