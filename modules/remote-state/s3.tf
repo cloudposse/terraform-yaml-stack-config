@@ -1,9 +1,5 @@
 locals {
-  include_component_in_workspace_name = var.include_component_in_workspace_name == true || local.base_component != ""
-
-  s3_workspace_from_stack = local.include_component_in_workspace_name ? format("%s-%s", local.stack, var.component) : local.stack
-
-  s3_workspace = var.workspace != null ? var.workspace : local.s3_workspace_from_stack
+  s3_workspace = var.workspace != null ? var.workspace : local.workspace
 }
 
 data "terraform_remote_state" "s3" {
@@ -65,7 +61,7 @@ data "terraform_remote_state" "s3" {
     # Use the profile to access the remote state if the component is not privileged and `profile` is specified
     profile = ! coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "profile") ? local.backend.profile : null
 
-    workspace_key_prefix = coalesce(local.base_component, var.component)
+    workspace_key_prefix = local.workspace_key_prefix
   }
 
   defaults = var.defaults

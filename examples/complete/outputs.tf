@@ -13,11 +13,6 @@ output "backend" {
   description = "Backend configuration for the component"
 }
 
-output "base_component" {
-  value       = module.backend.base_component
-  description = "Base component name"
-}
-
 output "settings" {
   value       = module.settings.settings
   description = "Settings for the component"

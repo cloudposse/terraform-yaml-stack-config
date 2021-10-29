@@ -1,19 +1,19 @@
-module "remote_state_my_vpc" {
+module "remote_state_using_stack" {
   source = "../../modules/remote-state"
 
-  stack_config_local_path = var.stack_config_local_path
-  stack                   = var.stack
-  component               = "my-vpc"
+  component = "test/test-component-override"
+  stack     = "tenant1-ue2-dev"
 
   context = module.this.context
 }
 
-module "remote_state_eks" {
+module "remote_state_using_context" {
   source = "../../modules/remote-state"
 
-  stack_config_local_path = var.stack_config_local_path
-  stack                   = var.stack
-  component               = "eks"
+  component   = "test/test-component-override"
+  tenant      = "tenant1"
+  environment = "ue2"
+  stage       = "dev"
 
   context = module.this.context
 }

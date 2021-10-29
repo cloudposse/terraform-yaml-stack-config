@@ -20,6 +20,7 @@ test: init
 	go test -v -timeout 3m -run TestExamplesStacks
 	go test -v -timeout 3m -run TestExamplesSpacelift
 	go test -v -timeout 3m -run TestExamplesStack
+	go test -v -timeout 3m -run TestExamplesRemoteState
 
 ## Run tests in docker container
 docker/test:
@@ -34,3 +35,4 @@ clean:
 	rm -rf ../../examples/stacks/*.tfstate*
 	rm -rf ../../examples/spacelift/*.tfstate*
 	rm -rf ../../examples/stack/*.tfstate*
+	rm -rf ../../examples/remote-state/*.tfstate*

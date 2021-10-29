@@ -6,7 +6,8 @@ module "stack" {
 }
 
 data "utils_stack_config_yaml" "config" {
-  input = [format("%s/%s.yaml", var.stack_config_local_path, module.stack.stack_name)]
+  base_path = var.stack_config_local_path
+  input     = [format("%s/%s.yaml", var.stack_config_local_path, module.stack.stack_name)]
 }
 
 locals {
