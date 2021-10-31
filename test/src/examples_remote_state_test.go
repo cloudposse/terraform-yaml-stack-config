@@ -36,7 +36,7 @@ func TestExamplesRemoteState(t *testing.T) {
 	assert.Equal(t, "2", remoteStateUsingStack["val2"])
 	assert.Equal(t, true, remoteStateUsingStack["val3"])
 	assert.Equal(t, "", remoteStateUsingStack["val4"])
-	assert.Equal(t, nil, remoteStateUsingStack["val5"])
+	assert.Equal(t, float64(5), remoteStateUsingStack["val5"])
 
 	terraform.OutputStruct(t, terraformOptions, "remote_state_using_context", &output)
 	remoteStateUsingContext := output.(map[string]interface{})
@@ -47,5 +47,5 @@ func TestExamplesRemoteState(t *testing.T) {
 	assert.Equal(t, "2", remoteStateUsingContext["val2"])
 	assert.Equal(t, true, remoteStateUsingContext["val3"])
 	assert.Equal(t, "", remoteStateUsingContext["val4"])
-	assert.Equal(t, nil, remoteStateUsingContext["val5"])
+	assert.Equal(t, float64(5), remoteStateUsingContext["val5"])
 }

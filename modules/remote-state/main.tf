@@ -7,9 +7,14 @@ data "utils_component_config" "config" {
 }
 
 locals {
-  config               = yamldecode(data.utils_component_config.config.output)
-  backend_type         = local.config.backend_type
-  backend              = local.config.backend
+  config = yamldecode(data.utils_component_config.config.output)
+
+  remote_state_backend_type = try(local.config.remote_state_backend_type, "")
+  backend_type              = coalesce(local.remote_state_backend_type, local.config.backend_type)
+
+  remote_state_backend = try(local.config.remote_state_backend, null) != null ? local.config.remote_state_backend : null
+  backend              = local.remote_state_backend != null ? local.remote_state_backend : local.config.backend
+
   workspace            = local.config.workspace
   workspace_key_prefix = lookup(local.backend, "workspace_key_prefix", null)
 
