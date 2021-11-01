@@ -12,13 +12,21 @@ locals {
   remote_state_backend_type = try(local.config.remote_state_backend_type, "")
   backend_type              = coalesce(local.remote_state_backend_type, local.config.backend_type)
 
-  remote_state_backend = try(local.config.remote_state_backend, null) != null ? local.config.remote_state_backend : null
-  backend              = local.remote_state_backend != null ? local.remote_state_backend : local.config.backend
+  # If `config.remote_state_backend` is not declared in YAML config, the default value will be an empty map `{}`
+  backend_config_key = try(local.config.remote_state_backend, null) != null && try(length(local.config.remote_state_backend), 0) > 0 ? "remote_state_backend" : "backend"
+
+  # This is used because the `?` operator in some instances (depending on the condition) changes the types of all items of the map to all `strings`
+  backend_configs = {
+    backend              = local.config.backend
+    remote_state_backend = local.config.remote_state_backend
+  }
+
+  backend = local.backend_configs[local.backend_config_key]
 
   workspace            = local.config.workspace
   workspace_key_prefix = lookup(local.backend, "workspace_key_prefix", null)
 
-  remote_state_enabled = ! var.bypass
+  remote_state_enabled = !var.bypass
 
   remote_states = {
     s3     = data.terraform_remote_state.s3
