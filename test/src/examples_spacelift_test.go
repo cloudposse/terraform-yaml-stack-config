@@ -3,7 +3,6 @@ package test
 import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v2"
 	"testing"
 )
 
@@ -70,8 +69,4 @@ func TestExamplesSpacelift(t *testing.T) {
 	assert.Equal(t, "deps:stacks/tenant1/ue2/dev.yaml", tenant1Ue2DevTestTestComponentOverrideComponentLabels[29])
 	assert.Equal(t, "folder:component/test/test-component-override", tenant1Ue2DevTestTestComponentOverrideComponentLabels[30])
 	assert.Equal(t, "folder:tenant1/ue2/dev", tenant1Ue2DevTestTestComponentOverrideComponentLabels[31])
-
-	yamlSpaceliftStacks, err := yaml.Marshal(spaceliftStacks)
-	assert.Nil(t, err)
-	t.Log(string(yamlSpaceliftStacks))
 }

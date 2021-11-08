@@ -15,22 +15,12 @@ components:
       # In this example, variables for each service are overridden in `catalog/services/service-?-override.*`
       component: "test/test-component"
       # Other variables can be overridden here
-      vars: { }
-      # Override backend for this component
-      backend_type: static # s3, remote, vault, static, etc.
-      backend:
-        static:
-          val1: 1
-          val2: "2"
-          val3: true
-          val4: ""
-          val5: null
+      vars: {}
       # Override remote state backend for this component
       remote_state_backend_type: static # s3, remote, vault, static, etc.
       remote_state_backend:
         static:
-          val1: 1
+          val1: true
           val2: "2"
-          val3: true
-          val4: ""
-          val5: 5
+          val3: 3
+          val4: null
