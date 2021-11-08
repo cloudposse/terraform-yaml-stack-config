@@ -1,8 +1,3 @@
-variable "stacks" {
-  type        = list(string)
-  description = "A list of infrastructure stack names"
-}
-
 variable "stack_deps_processing_enabled" {
   type        = bool
   description = "Boolean flag to enable/disable processing all stack dependencies in the provided stack"
@@ -25,10 +20,4 @@ variable "stack_config_path_template" {
   type        = string
   description = "Stack config path template"
   default     = "stacks/%s.yaml"
-}
-
-variable "stack_config_path" {
-  type        = string
-  description = "Relative path to YAML config files"
-  default     = "./stacks"
 }
