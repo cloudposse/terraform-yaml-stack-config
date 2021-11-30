@@ -19,9 +19,13 @@ jobs:
       run: |
         make init
         make readme/build
+        # Ignore changes if they are only whitespace
+        git diff --ignore-all-space --ignore-blank-lines --quiet README.md && git restore README.md
 
     - name: Create Pull Request
-      uses: cloudposse/actions/github/create-pull-request@0.20.0
+      # This action will not create or change a pull request if there are no changes to make.
+      # If a PR of the auto-update/readme branch is open, this action will just update it, not create a new PR.
+      uses: cloudposse/actions/github/create-pull-request@0.30.0
       with:
         token: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
         commit-message: Update README.md and docs
@@ -38,4 +42,5 @@ jobs:
         delete-branch: true
         labels: |
           auto-update
+          no-release
           readme
