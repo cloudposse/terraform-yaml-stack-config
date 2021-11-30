@@ -32,20 +32,18 @@ func TestExamplesRemoteState(t *testing.T) {
 
 	// Verify we're getting back the outputs we expect
 	assert.NotNilf(t, remoteStateUsingStack, "remote state is empty")
-	assert.Equal(t, float64(1), remoteStateUsingStack["val1"])
+	assert.Equal(t, true, remoteStateUsingStack["val1"])
 	assert.Equal(t, "2", remoteStateUsingStack["val2"])
-	assert.Equal(t, true, remoteStateUsingStack["val3"])
-	assert.Equal(t, "", remoteStateUsingStack["val4"])
-	assert.Equal(t, float64(5), remoteStateUsingStack["val5"])
+	assert.Equal(t, float64(3), remoteStateUsingStack["val3"])
+	assert.Equal(t, nil, remoteStateUsingStack["val4"])
 
 	terraform.OutputStruct(t, terraformOptions, "remote_state_using_context", &output)
 	remoteStateUsingContext := output.(map[string]interface{})
 
 	// Verify we're getting back the outputs we expect
 	assert.NotNilf(t, remoteStateUsingContext, "remote state is empty")
-	assert.Equal(t, float64(1), remoteStateUsingContext["val1"])
+	assert.Equal(t, true, remoteStateUsingContext["val1"])
 	assert.Equal(t, "2", remoteStateUsingContext["val2"])
-	assert.Equal(t, true, remoteStateUsingContext["val3"])
-	assert.Equal(t, "", remoteStateUsingContext["val4"])
-	assert.Equal(t, float64(5), remoteStateUsingContext["val5"])
+	assert.Equal(t, float64(3), remoteStateUsingContext["val3"])
+	assert.Equal(t, nil, remoteStateUsingContext["val4"])
 }
