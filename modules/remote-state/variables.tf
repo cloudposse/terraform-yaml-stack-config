@@ -1,3 +1,9 @@
+variable "stack_config_local_path" {
+  type        = string
+  description = "Path to local stack configs"
+  default     = null
+}
+
 variable "stack" {
   type        = string
   description = "Stack name"

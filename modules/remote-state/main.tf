@@ -1,4 +1,5 @@
 data "utils_component_config" "config" {
+  base_path   = var.stack_config_local_path
   component   = var.component
   stack       = var.stack
   tenant      = module.always.tenant
