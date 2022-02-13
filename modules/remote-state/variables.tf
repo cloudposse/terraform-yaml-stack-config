@@ -32,3 +32,9 @@ variable "bypass" {
   description = "Set to true to skip looking up the remote state and just return the defaults"
   default     = false
 }
+
+variable "ignore_errors" {
+  type        = bool
+  description = "Set to true to ignore errors from the 'utils' provider (if the component is not found in the stack)"
+  default     = false
+}

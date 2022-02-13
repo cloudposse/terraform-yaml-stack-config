@@ -1,6 +1,7 @@
 data "utils_component_config" "config" {
-  component = var.component
-  stack     = var.stack
+  component     = var.component
+  stack         = var.stack
+  ignore_errors = var.ignore_errors
 }
 
 locals {
