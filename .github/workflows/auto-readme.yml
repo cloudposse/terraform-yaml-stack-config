@@ -1,7 +1,16 @@
 name: "auto-readme"
 on:
   schedule:
-  # Update README.md nightly
+  # Example of job definition:
+  # .---------------- minute (0 - 59)
+  # |  .------------- hour (0 - 23)
+  # |  |  .---------- day of month (1 - 31)
+  # |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+  # |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+  # |  |  |  |  |
+  # *  *  *  *  * user-name command to be executed
+
+  # Update README.md nightly at 4am UTC
   - cron:  '0 4 * * *'
 
 jobs:
@@ -20,7 +29,7 @@ jobs:
         make init
         make readme/build
         # Ignore changes if they are only whitespace
-        git diff --ignore-all-space --ignore-blank-lines --quiet README.md && git restore README.md
+        git diff --ignore-all-space --ignore-blank-lines --quiet README.md && { git restore README.md; echo Ignoring whitespace-only changes in README; }
 
     - name: Create Pull Request
       # This action will not create or change a pull request if there are no changes to make.
