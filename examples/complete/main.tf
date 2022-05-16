@@ -9,15 +9,6 @@ module "vars" {
   context = module.this.context
 }
 
-module "backend" {
-  source = "../../modules/backend"
-
-  stack     = var.stack
-  component = var.component
-
-  context = module.this.context
-}
-
 module "settings" {
   source = "../../modules/settings"
 

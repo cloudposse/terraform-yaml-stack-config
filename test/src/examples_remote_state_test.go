@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-// Test the Terraform module in examples/complete using Terratest.
+// Test the Terraform module in examples/remote-state using Terratest.
 func TestExamplesRemoteState(t *testing.T) {
 	t.Parallel()
 

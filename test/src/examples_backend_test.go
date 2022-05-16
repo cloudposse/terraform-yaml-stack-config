@@ -6,13 +6,13 @@ import (
 	"testing"
 )
 
-// Test the Terraform module in examples/stacks using Terratest.
-func TestExamplesStacks(t *testing.T) {
+// Test the Terraform module in examples/backend using Terratest.
+func TestExamplesBackend(t *testing.T) {
 	t.Parallel()
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../../examples/stacks",
+		TerraformDir: "../../examples/backend",
 		Upgrade:      true,
 		// Variables to pass to our Terraform code using -var-file options
 		VarFiles: []string{"fixtures.tfvars"},
@@ -25,10 +25,12 @@ func TestExamplesStacks(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the value of an output variable
-	var output interface{}
-	terraform.OutputStruct(t, terraformOptions, "config", &output)
-	config := output.([]interface{})
-
+	backendType := terraform.Output(t, terraformOptions, "backend_type")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, 4, len(config))
+	assert.Equal(t, "s3", backendType)
+
+	// Run `terraform output` to get the value of an output variable
+	backend := terraform.OutputMap(t, terraformOptions, "backend")
+	// Verify we're getting back the outputs we expect
+	assert.Greater(t, len(backend), 0)
 }
