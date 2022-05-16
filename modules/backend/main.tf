@@ -1,6 +1,9 @@
 data "utils_component_config" "config" {
   component     = var.component
   stack         = var.stack
+  tenant        = module.always.tenant
+  environment   = module.always.environment
+  stage         = module.always.stage
   ignore_errors = var.ignore_errors
 }
 

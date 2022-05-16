@@ -1,11 +1,12 @@
-variable "component" {
-  type        = string
-  description = "Component"
-}
-
 variable "stack" {
   type        = string
   description = "Stack name"
+  default     = null
+}
+
+variable "component" {
+  type        = string
+  description = "Component"
 }
 
 variable "ignore_errors" {
