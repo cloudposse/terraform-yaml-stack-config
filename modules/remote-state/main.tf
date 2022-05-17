@@ -37,5 +37,5 @@ locals {
   }
 
   remote_state_backend_key = var.bypass ? "bypass" : local.backend_type
-  outputs                  = try(length(local.remote_state_backend_key), 0) > 0 ? local.remote_states[local.remote_state_backend_key][0].outputs : null
+  outputs                  = try(length(local.remote_state_backend_key), 0) > 0 ? local.remote_states[local.remote_state_backend_key][0].outputs : var.defaults
 }

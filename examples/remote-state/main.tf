@@ -30,5 +30,9 @@ module "remote_state_using_context_ignore_errors" {
   environment   = "ue2"
   stage         = "dev"
 
+  defaults = {
+    default_output = "default-value"
+  }
+
   context = module.this.context
 }

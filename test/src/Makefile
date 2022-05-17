@@ -1,5 +1,4 @@
-export TF_CLI_ARGS_init ?= -get-plugins=true
-export TERRAFORM_VERSION ?= $(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version' | cut -d. -f1-2)
+export TERRAFORM_VERSION ?= $(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version' | cut -d. -f1)
 
 .DEFAULT_GOAL : all
 
@@ -21,6 +20,7 @@ test: init
 	go test -v -timeout 3m -run TestExamplesSpacelift
 	go test -v -timeout 3m -run TestExamplesStack
 	go test -v -timeout 3m -run TestExamplesRemoteState
+	go test -v -timeout 3m -run TestExamplesBackend
 
 ## Run tests in docker container
 docker/test:
@@ -36,3 +36,4 @@ clean:
 	rm -rf ../../examples/spacelift/*.tfstate*
 	rm -rf ../../examples/stack/*.tfstate*
 	rm -rf ../../examples/remote-state/*.tfstate*
+	rm -rf ../../examples/backend/*.tfstate*
