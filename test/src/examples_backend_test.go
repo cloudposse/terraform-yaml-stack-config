@@ -8,7 +8,6 @@ import (
 
 // Test the Terraform module in examples/backend using Terratest.
 func TestExamplesBackend(t *testing.T) {
-	t.Parallel()
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located

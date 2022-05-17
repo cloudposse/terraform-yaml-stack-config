@@ -1,13 +1,11 @@
 variable "stack_config_local_path" {
   type        = string
   description = "Path to local stack configs"
-  default     = "examples/complete/stacks"
 }
 
 variable "stacks" {
   type        = list(string)
   description = "A list of infrastructure stack names"
-  default     = ["my-stack"]
 }
 
 variable "stack_deps_processing_enabled" {
