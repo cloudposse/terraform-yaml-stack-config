@@ -4,6 +4,13 @@ module "remote_state_using_stack" {
   component = "test/test-component-override"
   stack     = "tenant1-ue2-dev"
 
+  # Verify that a default output not matching the real output does not cause a Terraform error
+  defaults = {
+    val1 = ["default-list"]
+    val2 = "default-value"
+  }
+
+
   context = module.this.context
 }
 
