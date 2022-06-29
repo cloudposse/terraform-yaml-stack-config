@@ -8,7 +8,6 @@ import (
 
 // Test the Terraform module in examples/complete using Terratest.
 func TestExamplesComplete(t *testing.T) {
-	t.Parallel()
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -28,16 +27,6 @@ func TestExamplesComplete(t *testing.T) {
 	vars := terraform.OutputMap(t, terraformOptions, "vars")
 	// Verify we're getting back the outputs we expect
 	assert.Greater(t, len(vars), 0)
-
-	// Run `terraform output` to get the value of an output variable
-	backendType := terraform.Output(t, terraformOptions, "backend_type")
-	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "s3", backendType)
-
-	// Run `terraform output` to get the value of an output variable
-	backend := terraform.OutputMap(t, terraformOptions, "backend")
-	// Verify we're getting back the outputs we expect
-	assert.Greater(t, len(backend), 0)
 
 	// Run `terraform output` to get the value of an output variable
 	settings := terraform.OutputMap(t, terraformOptions, "settings")

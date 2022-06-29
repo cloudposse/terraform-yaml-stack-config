@@ -6,9 +6,8 @@ import (
 	"testing"
 )
 
-// Test the Terraform module in examples/complete using Terratest.
+// Test the Terraform module in examples/stack using Terratest.
 func TestExamplesStack(t *testing.T) {
-	t.Parallel()
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located

@@ -6,9 +6,8 @@ import (
 	"testing"
 )
 
-// Test the Terraform module in examples/complete using Terratest.
+// Test the Terraform module in examples/remote-state using Terratest.
 func TestExamplesRemoteState(t *testing.T) {
-	t.Parallel()
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -46,4 +45,11 @@ func TestExamplesRemoteState(t *testing.T) {
 	assert.Equal(t, "2", remoteStateUsingContext["val2"])
 	assert.Equal(t, float64(3), remoteStateUsingContext["val3"])
 	assert.Equal(t, nil, remoteStateUsingContext["val4"])
+
+	terraform.OutputStruct(t, terraformOptions, "remote_state_using_context_ignore_errors", &output)
+	remoteStateUsingContextIgnoreErrors := output.(map[string]interface{})
+
+	// Verify we're getting back the outputs we expect
+	assert.NotNilf(t, remoteStateUsingContextIgnoreErrors, "remote state is empty")
+	assert.Equal(t, "default-value", remoteStateUsingContextIgnoreErrors["default_output"])
 }
