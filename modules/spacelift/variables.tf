@@ -21,3 +21,9 @@ variable "stack_config_path_template" {
   description = "Stack config path template"
   default     = "stacks/%s.yaml"
 }
+
+variable "env" {
+  type        = map(string)
+  description = "Map of ENV vars in the format `key=value`. These ENV vars will be set in the `utils` provider before executing the data source"
+  default     = null
+}

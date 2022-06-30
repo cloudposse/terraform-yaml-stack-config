@@ -5,6 +5,7 @@ data "utils_component_config" "config" {
   environment   = module.always.environment
   stage         = module.always.stage
   ignore_errors = var.ignore_errors
+  env           = var.env
 }
 
 locals {
