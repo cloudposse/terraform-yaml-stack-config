@@ -6,5 +6,7 @@ module "spacelift" {
   component_deps_processing_enabled = var.component_deps_processing_enabled
   imports_processing_enabled        = var.imports_processing_enabled
 
+  env = var.env
+
   context = module.this.context
 }

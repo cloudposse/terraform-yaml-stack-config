@@ -10,6 +10,9 @@ module "remote_state_using_stack" {
     val2 = "default-value"
   }
 
+  env = {
+    ATMOS_CLI_CONFIG_PATH = path.module
+  }
 
   context = module.this.context
 }
@@ -21,6 +24,10 @@ module "remote_state_using_context" {
   tenant      = "tenant1"
   environment = "ue2"
   stage       = "dev"
+
+  env = {
+    ATMOS_CLI_CONFIG_PATH = path.module
+  }
 
   context = module.this.context
 }
@@ -39,6 +46,10 @@ module "remote_state_using_context_ignore_errors" {
 
   defaults = {
     default_output = "default-value"
+  }
+
+  env = {
+    ATMOS_CLI_CONFIG_PATH = path.module
   }
 
   context = module.this.context

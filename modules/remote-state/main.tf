@@ -5,6 +5,7 @@ data "utils_component_config" "config" {
   environment   = module.always.environment
   stage         = module.always.stage
   ignore_errors = var.ignore_errors
+  env           = var.env
 }
 
 locals {
@@ -27,7 +28,7 @@ locals {
   workspace            = lookup(local.config, "workspace", "")
   workspace_key_prefix = lookup(local.backend, "workspace_key_prefix", null)
 
-  remote_state_enabled = ! var.bypass
+  remote_state_enabled = !var.bypass
 
   remote_states = {
     s3     = data.terraform_remote_state.s3
