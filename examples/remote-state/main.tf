@@ -21,6 +21,7 @@ module "remote_state_using_context" {
   source = "../../modules/remote-state"
 
   component   = "test/test-component-override"
+  namespace   = ""
   tenant      = "tenant1"
   environment = "ue2"
   stage       = "dev"
@@ -40,6 +41,7 @@ module "remote_state_using_context_ignore_errors" {
   # Note that terraform `try()` does not catch errors from providers, so `try(module.remote_state_using_context_ignore_errors.outputs, {})` will not work
   ignore_errors = true
   component     = "test/test-component-override-wrong"
+  namespace     = ""
   tenant        = "tenant1"
   environment   = "ue2"
   stage         = "dev"

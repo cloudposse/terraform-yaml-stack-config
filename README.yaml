@@ -50,6 +50,7 @@ categories:
   - helmfile
   - provider
   - terraform-provider
+  - terraform-backend
   - deep-merge
   - backend
   - s3
