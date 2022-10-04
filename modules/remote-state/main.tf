@@ -1,12 +1,14 @@
 data "utils_component_config" "config" {
-  component     = var.component
-  stack         = var.stack
-  namespace     = module.always.namespace
-  tenant        = module.always.tenant
-  environment   = module.always.environment
-  stage         = module.always.stage
-  ignore_errors = var.ignore_errors
-  env           = var.env
+  component             = var.component
+  stack                 = var.stack
+  namespace             = module.always.namespace
+  tenant                = module.always.tenant
+  environment           = module.always.environment
+  stage                 = module.always.stage
+  ignore_errors         = var.ignore_errors
+  env                   = var.env
+  atmos_cli_config_path = var.atmos_cli_config_path
+  atmos_base_path       = var.atmos_base_path
 }
 
 locals {
@@ -29,7 +31,7 @@ locals {
   workspace            = lookup(local.config, "workspace", "")
   workspace_key_prefix = lookup(local.backend, "workspace_key_prefix", null)
 
-  remote_state_enabled = ! var.bypass
+  remote_state_enabled = !var.bypass
 
   remote_states = {
     s3     = data.terraform_remote_state.s3

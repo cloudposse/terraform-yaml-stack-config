@@ -14,6 +14,9 @@ module "remote_state_using_stack" {
     ATMOS_CLI_CONFIG_PATH = path.module
   }
 
+  atmos_cli_config_path = var.atmos_cli_config_path
+  atmos_base_path       = var.atmos_base_path
+
   context = module.this.context
 }
 
@@ -29,6 +32,9 @@ module "remote_state_using_context" {
   env = {
     ATMOS_CLI_CONFIG_PATH = path.module
   }
+
+  atmos_cli_config_path = var.atmos_cli_config_path
+  atmos_base_path       = var.atmos_base_path
 
   context = module.this.context
 }
@@ -53,6 +59,9 @@ module "remote_state_using_context_ignore_errors" {
   env = {
     ATMOS_CLI_CONFIG_PATH = path.module
   }
+
+  atmos_cli_config_path = var.atmos_cli_config_path
+  atmos_base_path       = var.atmos_base_path
 
   context = module.this.context
 }

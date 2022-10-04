@@ -20,3 +20,15 @@ variable "env" {
   description = "Map of ENV vars in the format `key=value`. These ENV vars will be set in the `utils` provider before executing the data source"
   default     = null
 }
+
+variable "atmos_cli_config_path" {
+  type        = string
+  description = "atmos CLI config path"
+  default     = null
+}
+
+variable "atmos_base_path" {
+  type        = string
+  description = "atmos base path to components and stacks"
+  default     = null
+}
