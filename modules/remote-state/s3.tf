@@ -3,13 +3,27 @@ locals {
 }
 
 data "terraform_remote_state" "s3" {
-  count = local.remote_state_enabled && local.backend_type == "s3" ? 1 : 0
+  # workaround for https://github.com/hashicorp/terraform/issues/32023
+  count = local.remote_state_enabled && (var.backend_type == "s3" ? true : var.backend_type != "auto" ? false : local.backend_type == "s3") ? 1 : 0
 
-  backend = "s3"
+  # Mitigation for https://github.com/hashicorp/terraform/issues/32023
+  #
+  # With this bug, `local.config` is unknown and everything that flows from it
+  # is unknown, and cannot be used in count or for_each. This includes
+  # `local.backend_type`. The workaround is to force the S3 terraform remote
+  # state data source to be created, and then use `local.backend_type` to
+  # determine if we really meant to reference the S3 remote state, because by
+  # the time we get there, `local.config` is known. Except now that it is
+  # known, it might not really be S3, so we have to supply a dummy value if it
+  # is not S3. The rest of our code will ignore the dummy value, because it
+  # will not be looking to this resource for the data it needs, it will be
+  # looking to the correct backend type.
 
-  workspace = local.s3_workspace
+  backend = local.backend_type == "s3" ? "s3" : "local"
 
-  config = {
+  workspace = local.backend_type == "s3" ? local.s3_workspace : null
+
+  config = local.backend_type == "s3" ? {
     encrypt        = local.backend.encrypt
     bucket         = local.backend.bucket
     key            = local.backend.key
@@ -56,12 +70,14 @@ data "terraform_remote_state" "s3" {
     # component, we don't touch the `globals.yaml` file at all, and we don't update the component's `role_arn` and `profile` settings).
 
     # Use the role to access the remote state if the component is not privileged and `role_arn` is specified
-    role_arn = ! coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "role_arn") ? local.backend.role_arn : null
+    role_arn = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "role_arn") ? local.backend.role_arn : null
 
     # Use the profile to access the remote state if the component is not privileged and `profile` is specified
-    profile = ! coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "profile") ? local.backend.profile : null
+    profile = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "profile") ? local.backend.profile : null
 
     workspace_key_prefix = local.workspace_key_prefix
+    } : {
+    path = "${path.module}/dummy-remote-state.json"
   }
 
   defaults = var.defaults

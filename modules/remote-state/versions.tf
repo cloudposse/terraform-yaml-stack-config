@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.13.0"
+  required_version = ">= 1.1.0"
 
   required_providers {
     local = {
@@ -11,8 +11,17 @@ terraform {
       version = ">= 2.0"
     }
     utils = {
-      source  = "cloudposse/utils"
-      version = "1.5.0"
+      source = "cloudposse/utils"
+      # Do not allow automatic updates to this provider
+      # until we have tested the new version thoroughly.
+      # Move the <= version constraint to the latest version
+      # after testing is complete. Move the >= version constraint
+      # when a new version adds a required feature or fixes a bug.
+      # If a version in between is found to have a bug,
+      # add a != constraint for that version.
+      # Leave a redundant != constraint for the last known bad version
+      # as an example of how to add a constraint for a bad version.
+      version = ">= 1.5.0, != 1.4.0, <= 1.5.0"
     }
   }
 }
