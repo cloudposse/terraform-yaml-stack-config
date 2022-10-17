@@ -34,14 +34,15 @@ locals {
   remote_state_enabled = !var.bypass
 
   remote_states = {
-    s3     = data.terraform_remote_state.s3
-    remote = data.terraform_remote_state.remote
-    bypass = [{ outputs = var.defaults }]
-    static = [{ outputs = local.backend }]
+    # s3     = data.terraform_remote_state.s3
+    # remote = data.terraform_remote_state.remote
+    data_source = try(data.terraform_remote_state.data_source.outputs, var.defaults)
+    bypass      = var.defaults
+    static      = local.backend
   }
 
   remote_state_backend_key          = var.bypass ? "bypass" : local.backend_type
   computed_remote_state_backend_key = try(length(local.remote_states[local.remote_state_backend_key]), 0) > 0 ? local.remote_state_backend_key : "bypass"
 
-  outputs = local.remote_states[local.computed_remote_state_backend_key][0].outputs
+  outputs = local.remote_states[local.computed_remote_state_backend_key]
 }

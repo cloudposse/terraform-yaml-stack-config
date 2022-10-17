@@ -56,17 +56,3 @@ variable "atmos_base_path" {
   description = "atmos base path to components and stacks"
   default     = null
 }
-
-variable "backend_type" {
-  type = string
-  # Due to Terraform [issue #32023](https://github.com/hashicorp/terraform/issues/32023),
-  # we cannot reliably get the backend type from the stack configuration, even when
-  # the stack has it. So we need to pass it in as a variable.
-  description = <<-EOF
-    Set to "auto" to get the backend type from the stack configuration.
-    Unfortunately, the "auto" setting causes Terraform [issue #32023](https://github.com/hashicorp/terraform/issues/32023).
-    However, please continue to configure the backend type in the stack configuration,
-    because when the Terraform issue is fixed, the default will be quietly changed to "auto".
-    EOF
-  default     = "s3"
-}
