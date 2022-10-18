@@ -40,11 +40,11 @@ locals {
       # The `backend` portion for each individual component should be declared in a catalog file (e.g. `stacks/catalog/<component>.yaml`)
       # along with all the default values for a component.
       # The `privileged` attribute should always be declared in the `backend` portion for each individual component in the catalog.
-      # Top-level stacks where a component is provisioned import the component's catalog (the default values and the component's backend config portion) and can override the default value.
+      # Top-level stacks where a component is provisioned import the component's catalog (the default values and the component's backend config portion) and can override the default values.
 
       # NOTE: `cold-start`
       # During cold-start we don't have any IAM roles provisioned yet, so we use an admin user credentials to provision the privileged components.
-      # The `privileged` attribute for the privileged components should be set to `true` in the components'  catalog,
+      # The `privileged` attribute for the privileged components should be set to `true` in the components' catalog,
       # and the privileged components should be provisioned using an admin user credentials.
 
       # NOTE: after `cold-start`
