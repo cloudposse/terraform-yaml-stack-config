@@ -1,6 +1,9 @@
 locals {
+  data_source_backends   = ["remote", "s3"]
+  is_data_source_backend = contains(local.data_source_backends, local.backend_type)
+
   remote_workspace = var.workspace != null ? var.workspace : local.workspace
-  ds_backend       = contains(["remote", "s3"], local.backend_type) ? local.backend_type : "local"
+  ds_backend       = local.is_data_source_backend ? local.backend_type : "local"
   ds_workspace     = local.ds_backend == "local" ? null : local.remote_workspace
 
   ds_configurations = {
@@ -8,15 +11,15 @@ locals {
       path = "${path.module}/dummy-remote-state.json"
     }
 
-    remote = local.ds_backend == "remote" ? {
+    remote = local.ds_backend != "remote" ? null : {
       organization = local.backend.organization
 
       workspaces = {
         name = local.remote_workspace
       }
-    } : null
+    }
 
-    s3 = local.ds_backend == "s3" ? {
+    s3 = local.ds_backend != "s3" ? null : {
       encrypt        = local.backend.encrypt
       bucket         = local.backend.bucket
       key            = local.backend.key
@@ -69,7 +72,7 @@ locals {
       profile = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "profile") ? local.backend.profile : null
 
       workspace_key_prefix = local.workspace_key_prefix
-    } : null
+    }
   } # ds_configurations
 
 

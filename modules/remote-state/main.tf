@@ -41,7 +41,7 @@ locals {
     static      = local.backend
   }
 
-  remote_state_backend_key          = var.bypass ? "bypass" : local.backend_type
+  remote_state_backend_key          = var.bypass ? "bypass" : local.is_data_source_backend ? "data_source" : local.backend_type
   computed_remote_state_backend_key = try(length(local.remote_states[local.remote_state_backend_key]), 0) > 0 ? local.remote_state_backend_key : "bypass"
 
   outputs = local.remote_states[local.computed_remote_state_backend_key]
