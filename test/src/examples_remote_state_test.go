@@ -24,10 +24,10 @@ func TestExamplesRemoteState(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the value of an output variable
-	var output interface{}
+	var output any
 
 	terraform.OutputStruct(t, terraformOptions, "remote_state_using_stack", &output)
-	remoteStateUsingStack := output.(map[string]interface{})
+	remoteStateUsingStack := output.(map[string]any)
 
 	// Verify we're getting back the outputs we expect
 	assert.NotNilf(t, remoteStateUsingStack, "remote state is empty")
@@ -37,7 +37,7 @@ func TestExamplesRemoteState(t *testing.T) {
 	assert.Equal(t, nil, remoteStateUsingStack["val4"])
 
 	terraform.OutputStruct(t, terraformOptions, "remote_state_using_context", &output)
-	remoteStateUsingContext := output.(map[string]interface{})
+	remoteStateUsingContext := output.(map[string]any)
 
 	// Verify we're getting back the outputs we expect
 	assert.NotNilf(t, remoteStateUsingContext, "remote state is empty")
@@ -47,7 +47,7 @@ func TestExamplesRemoteState(t *testing.T) {
 	assert.Equal(t, nil, remoteStateUsingContext["val4"])
 
 	terraform.OutputStruct(t, terraformOptions, "remote_state_using_context_ignore_errors", &output)
-	remoteStateUsingContextIgnoreErrors := output.(map[string]interface{})
+	remoteStateUsingContextIgnoreErrors := output.(map[string]any)
 
 	// Verify we're getting back the outputs we expect
 	assert.NotNilf(t, remoteStateUsingContextIgnoreErrors, "remote state is empty")
