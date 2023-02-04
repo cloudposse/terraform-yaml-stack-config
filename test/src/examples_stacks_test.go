@@ -24,9 +24,9 @@ func TestExamplesStacks(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the value of an output variable
-	var output interface{}
+	var output any
 	terraform.OutputStruct(t, terraformOptions, "config", &output)
-	config := output.([]interface{})
+	config := output.([]any)
 
 	// Verify we're getting back the outputs we expect
 	assert.Equal(t, 4, len(config))
