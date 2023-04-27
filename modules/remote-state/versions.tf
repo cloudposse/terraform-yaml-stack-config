@@ -21,7 +21,7 @@ terraform {
       # add a != constraint for that version.
       # Leave a redundant != constraint for the last known bad version
       # as an example of how to add a constraint for a bad version.
-      version = ">= 1.7.1, != 1.4.0, <= 1.7.1"
+      version = ">= 1.8.0, != 1.4.0, <= 1.8.0"
     }
   }
 }
