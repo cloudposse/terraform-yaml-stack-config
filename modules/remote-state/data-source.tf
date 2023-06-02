@@ -83,16 +83,11 @@ locals {
 
   } # ds_configurations
 
-
 }
 
-# Due to issues like
-# - https://github.com/hashicorp/terraform/issues/32023
-# - https://github.com/hashicorp/terraform/issues/27849
-# we want to avoid using `count` to enable or disable the data source,
-# so instead we use a dummy remote state (a local file) when otherwise
-# we would disable the data source via `count = 0`.
 data "terraform_remote_state" "data_source" {
+  count = var.bypass ? 0 : 1
+
   backend   = local.ds_backend
   workspace = local.ds_workspace
   config    = local.ds_configurations[local.ds_backend]
