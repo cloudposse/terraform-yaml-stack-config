@@ -1,18 +1,20 @@
 data "utils_component_config" "config" {
+  count = var.bypass ? 0 : 1
+
   component             = var.component
   stack                 = var.stack
   namespace             = module.always.namespace
   tenant                = module.always.tenant
   environment           = module.always.environment
   stage                 = module.always.stage
-  ignore_errors         = var.ignore_errors || var.bypass
+  ignore_errors         = var.ignore_errors
   env                   = var.env
   atmos_cli_config_path = var.atmos_cli_config_path
   atmos_base_path       = var.atmos_base_path
 }
 
 locals {
-  config = yamldecode(data.utils_component_config.config.output)
+  config = !var.bypass ? yamldecode(data.utils_component_config.config[0].output) : {}
 
   remote_state_backend_type = try(local.config.remote_state_backend_type, "")
   backend_type              = try(coalesce(local.remote_state_backend_type, local.config.backend_type), "")
@@ -34,7 +36,7 @@ locals {
   remote_states = {
     # s3     = data.terraform_remote_state.s3
     # remote = data.terraform_remote_state.remote
-    data_source = try(data.terraform_remote_state.data_source.outputs, var.defaults)
+    data_source = try(data.terraform_remote_state.data_source[0].outputs, var.defaults)
     bypass      = var.defaults
     static      = local.backend
   }
