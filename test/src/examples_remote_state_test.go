@@ -28,7 +28,6 @@ func TestExamplesRemoteState(t *testing.T) {
 
 	terraform.OutputStruct(t, terraformOptions, "remote_state_using_stack", &output)
 	remoteStateUsingStack := output.(map[string]any)
-
 	// Verify we're getting back the outputs we expect
 	assert.NotNilf(t, remoteStateUsingStack, "remote state is empty")
 	assert.Equal(t, true, remoteStateUsingStack["val1"])
@@ -38,7 +37,6 @@ func TestExamplesRemoteState(t *testing.T) {
 
 	terraform.OutputStruct(t, terraformOptions, "remote_state_using_context", &output)
 	remoteStateUsingContext := output.(map[string]any)
-
 	// Verify we're getting back the outputs we expect
 	assert.NotNilf(t, remoteStateUsingContext, "remote state is empty")
 	assert.Equal(t, true, remoteStateUsingContext["val1"])
@@ -48,8 +46,13 @@ func TestExamplesRemoteState(t *testing.T) {
 
 	terraform.OutputStruct(t, terraformOptions, "remote_state_using_context_ignore_errors", &output)
 	remoteStateUsingContextIgnoreErrors := output.(map[string]any)
-
 	// Verify we're getting back the outputs we expect
 	assert.NotNilf(t, remoteStateUsingContextIgnoreErrors, "remote state is empty")
 	assert.Equal(t, "default-value", remoteStateUsingContextIgnoreErrors["default_output"])
+
+	terraform.OutputStruct(t, terraformOptions, "remote_state_with_bypass", &output)
+	remoteStateWithBypass := output.(map[string]any)
+	// Verify we're getting back the outputs we expect
+	assert.NotNilf(t, remoteStateWithBypass, "remote state is empty")
+	assert.Equal(t, "default-value", remoteStateWithBypass["default_output"])
 }

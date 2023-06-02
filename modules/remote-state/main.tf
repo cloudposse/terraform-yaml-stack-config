@@ -14,11 +14,7 @@ data "utils_component_config" "config" {
 }
 
 locals {
-  default_config = {
-    backend = {}
-  }
-
-  config = !var.bypass ? yamldecode(data.utils_component_config.config[0].output) : local.default_config
+  config = try(yamldecode(data.utils_component_config.config[0].output), {})
 
   remote_state_backend_type = try(local.config.remote_state_backend_type, "")
   backend_type              = try(coalesce(local.remote_state_backend_type, local.config.backend_type), "")

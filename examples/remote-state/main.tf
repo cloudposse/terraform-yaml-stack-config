@@ -65,3 +65,24 @@ module "remote_state_using_context_ignore_errors" {
 
   context = module.this.context
 }
+
+module "remote_state_with_bypass" {
+  source = "../../modules/remote-state"
+
+  bypass = true
+
+  defaults = {
+    default_output = "default-value"
+  }
+
+  component   = "test/test-component-override"
+  namespace   = ""
+  tenant      = "tenant1"
+  environment = "ue2"
+  stage       = "dev"
+
+  atmos_cli_config_path = var.atmos_cli_config_path
+  atmos_base_path       = var.atmos_base_path
+
+  context = module.this.context
+}

@@ -12,3 +12,8 @@ output "remote_state_using_context_ignore_errors" {
   value       = module.remote_state_using_context_ignore_errors.outputs
   description = "Component remote state using wrong component. Errors are ignored in the 'utils' provider"
 }
+
+output "remote_state_with_bypass" {
+  value       = module.remote_state_with_bypass.outputs
+  description = "Component remote state with 'bypass' set to 'true'"
+}
