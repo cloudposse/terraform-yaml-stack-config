@@ -3,7 +3,7 @@ locals {
   is_data_source_backend = contains(local.data_source_backends, local.backend_type)
 
   remote_workspace = var.workspace != null ? var.workspace : local.workspace
-  ds_backend       = local.is_data_source_backend ? local.backend_type : "local"
+  ds_backend       = local.is_data_source_backend && !var.bypass ? local.backend_type : "local"
   ds_workspace     = local.ds_backend == "local" ? null : local.remote_workspace
 
   ds_configurations = {
