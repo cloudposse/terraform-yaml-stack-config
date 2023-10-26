@@ -66,7 +66,7 @@ locals {
       # component, we don't touch the `globals.yaml` file at all, and we don't update the component's `role_arn` and `profile` settings).
 
       # Use the role to access the remote state if the component is not privileged and `role_arn` is specified
-      role_arn = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "role_arn") ? local.backend.role_arn : null
+      assume_role.role_arn = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "role_arn") ? local.backend.role_arn : null
 
       # Use the profile to access the remote state if the component is not privileged and `profile` is specified
       profile = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "profile") ? local.backend.profile : null
