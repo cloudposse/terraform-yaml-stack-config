@@ -26,6 +26,8 @@ locals {
       dynamodb_table = local.backend.dynamodb_table
       region         = local.backend.region
 
+      use_legacy_workflow = local.backend.use_legacy_workflow
+
       # NOTE: component types
       # Privileged components are those that require elevated (root-level) permissions to provision and access their remote state.
       # For example: `tfstate-backend`, `account`, `account-map`, `account-settings`, `iam-primary`.
