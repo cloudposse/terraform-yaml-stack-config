@@ -26,7 +26,7 @@ locals {
       dynamodb_table = local.backend.dynamodb_table
       region         = local.backend.region
 
-      use_legacy_workflow = local.backend.use_legacy_workflow
+      use_legacy_workflow = try(local.backend.use_legacy_workflow, null)
 
       # NOTE: component types
       # Privileged components are those that require elevated (root-level) permissions to provision and access their remote state.
