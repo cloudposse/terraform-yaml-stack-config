@@ -1,0 +1,7 @@
+# Upstream changes from _extends are only recognized when modifications are made to this file in the default branch.
+_extends: .github
+repository:
+  name: terraform-yaml-stack-config
+  description: Terraform module that loads an opinionated 'stack' configuration from local or remote YAML sources. It supports deep-merged variables, settings, ENV variables, backend config, and remote state outputs for Terraform and helmfile components.
+  homepage: https://cloudposse.com/accelerate
+  topics: yaml, configuration, config, configuration-management, terraform, terraform-module, helm, helmfile, configuration-files, configs, yaml-configuration, stack, stacks
