@@ -68,6 +68,8 @@ locals {
       # Use the role to access the remote state if the component is not privileged and `role_arn` is specified
       role_arn = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "role_arn") ? local.backend.role_arn : null
 
+      assume_role = local.backend.assume_role
+
       # Use the profile to access the remote state if the component is not privileged and `profile` is specified
       profile = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "profile") ? local.backend.profile : null
 
