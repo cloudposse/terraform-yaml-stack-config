@@ -72,6 +72,18 @@ locals {
       profile = !coalesce(try(local.backend.privileged, null), var.privileged) && contains(keys(local.backend), "profile") ? local.backend.profile : null
 
       workspace_key_prefix = local.workspace_key_prefix
+
+      # S3-compatible backend for Oracle
+      # source: https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformUsingObjectStore.htm#s3
+      skip_region_validation      = try(local.backend.skip_region_validation, null)
+      skip_credentials_validation = try(local.backend.skip_credentials_validation, null)
+      skip_requesting_account_id  = try(local.backend.skip_requesting_account_id, null)
+      use_path_style              = try(local.backend.use_path_style, null)
+      force_path_style            = try(local.backend.force_path_style, null)
+      skip_metadata_api_check     = try(local.backend.skip_metadata_api_check, null)
+      skip_s3_checksum            = try(local.backend.skip_s3_checksum, null)
+      endpoints                   = try(local.backend.endpoints, null)
+      endpoint                    = try(local.backend.endpoint, null)
     }
 
     azurerm = local.ds_backend != "azurerm" ? null : {
