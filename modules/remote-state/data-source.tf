@@ -21,10 +21,10 @@ locals {
     #
     # Both path and workspace_dir are optional.
     local = local.ds_backend != "local" ? null : merge({},
-        try(length(lookup(local.backend, "path", "")), 0) > 0 ? {
+      try(length(lookup(local.backend, "path", "")), 0) > 0 ? {
         path = lookup(local.backend, "path", "")
       } : {},
-        try(length(lookup(local.backend, "workspace_dir", "")), 0) > 0 ? {
+      try(length(lookup(local.backend, "workspace_dir", "")), 0) > 0 ? {
         workspace_dir = lookup(local.backend, "workspace_dir", "")
       } : {}
     )
