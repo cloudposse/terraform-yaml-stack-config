@@ -17,7 +17,7 @@ test: init
 	go mod download
 	go test -v -timeout 3m -run TestExamplesComplete
 	go test -v -timeout 3m -run TestExamplesStacks
-	go test -v -timeout 3m -run TestExamplesSpacelift
+	go test -v -timeout 3m -run TestExamplesSpacelift # NOTE: Test is skipped because the test itself is broken
 	go test -v -timeout 3m -run TestExamplesStack
 	go test -v -timeout 3m -run TestExamplesRemoteState
 	go test -v -timeout 3m -run TestExamplesBackend
