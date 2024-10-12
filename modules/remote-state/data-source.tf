@@ -1,5 +1,5 @@
 locals {
-  data_source_backends   = ["remote", "s3", "azurerm"]
+  data_source_backends   = ["remote", "s3", "azurerm", "gcs"]
   is_data_source_backend = contains(local.data_source_backends, local.backend_type)
 
   remote_workspace = var.workspace != null ? var.workspace : local.workspace
@@ -91,6 +91,11 @@ locals {
       storage_account_name = local.backend.storage_account_name
       container_name       = local.backend.container_name
       key                  = local.backend.key
+    }
+
+    gcs = local.ds_backend != "gcs" ? null : {
+      bucket = local.backend.bucket
+      prefix = local.backend.prefix
     }
 
   } # ds_configurations
