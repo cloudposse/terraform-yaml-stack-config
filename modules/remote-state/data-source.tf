@@ -1,15 +1,33 @@
 locals {
-  data_source_backends   = ["remote", "s3", "azurerm", "gcs"]
+  data_source_backends   = ["local", "remote", "s3", "azurerm", "gcs"]
   is_data_source_backend = contains(local.data_source_backends, local.backend_type)
 
   remote_workspace = var.workspace != null ? var.workspace : local.workspace
-  ds_backend       = local.is_data_source_backend ? local.backend_type : "local"
-  ds_workspace     = local.ds_backend == "local" ? null : local.remote_workspace
+  ds_backend       = local.is_data_source_backend ? local.backend_type : "none"
+  ds_workspace     = local.ds_backend == "none" ? null : local.remote_workspace
 
   ds_configurations = {
-    local = {
+    # If no valid configuration is found for the backend datasource, provide a dummy one.
+    none = {
       path = "${path.module}/dummy-remote-state.json"
     }
+
+    # Note: If the local backend has a relative path, it will be resolved
+    # relative to the current working directory, which is usually a root module
+    # referencing the remote state. However, when the local backend is created,
+    # the current working directory is the directory where the target root module
+    # is defined. This will likely cause the lookup to fail unless the current
+    # and target root module directories are in the same directory.
+    #
+    # Both path and workspace_dir are optional.
+    local = local.ds_backend != "local" ? null : merge({},
+      try(length(lookup(local.backend, "path", "")), 0) > 0 ? {
+        path = lookup(local.backend, "path", "")
+      } : {},
+      try(length(lookup(local.backend, "workspace_dir", "")), 0) > 0 ? {
+        workspace_dir = lookup(local.backend, "workspace_dir", "")
+      } : {}
+    )
 
     remote = local.ds_backend != "remote" ? null : {
       organization = local.backend.organization
@@ -105,7 +123,7 @@ locals {
 data "terraform_remote_state" "data_source" {
   count = var.bypass ? 0 : 1
 
-  backend   = local.ds_backend
+  backend   = local.ds_backend == "none" ? "local" : local.ds_backend
   workspace = local.ds_workspace
   config    = local.ds_configurations[local.ds_backend]
   defaults  = var.defaults
