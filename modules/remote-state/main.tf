@@ -17,7 +17,7 @@ locals {
   config = try(yamldecode(data.utils_component_config.config[0].output), {})
 
   remote_state_backend_type = try(local.config.remote_state_backend_type, "")
-  backend_type              = try(coalesce(local.remote_state_backend_type, local.config.backend_type), "")
+  backend_type              = try(coalesce(local.remote_state_backend_type, local.config.backend_type), "none")
 
   # If `config.remote_state_backend` is not declared in YAML config, the default value will be an empty map `{}`
   backend_config_key = try(local.config.remote_state_backend, null) != null && try(length(local.config.remote_state_backend), 0) > 0 ? "remote_state_backend" : "backend"
@@ -30,12 +30,10 @@ locals {
 
   backend = local.backend_configs[local.backend_config_key]
 
-  workspace            = lookup(local.config, "workspace", "")
-  workspace_key_prefix = lookup(local.backend, "workspace_key_prefix", null)
+  workspace = lookup(local.config, "workspace", "")
+  # workspace_key_prefix = lookup(local.backend, "workspace_key_prefix", null)
 
   remote_states = {
-    # s3     = data.terraform_remote_state.s3
-    # remote = data.terraform_remote_state.remote
     data_source = try(data.terraform_remote_state.data_source[0].outputs, var.defaults)
     bypass      = var.defaults
     static      = local.backend
